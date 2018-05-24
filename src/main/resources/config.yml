@@ -1,0 +1,22 @@
+# MultiEconomy
+
+economy-types:
+- "gems"
+- "tokens"
+- "crystals"
+
+
+gems:
+  name: "Gems"
+  symbol: "$"
+  start_amount: 100
+
+tokens:
+  name: "Tokens"
+  symbol: "$$"
+  start_amount: 100
+
+crystals:
+  name: "Crystals"
+  symbol: "$$$"
+  start_amount: 100
