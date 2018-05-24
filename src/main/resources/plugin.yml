@@ -1,0 +1,5 @@
+name: MultiEconomy
+version: ${project.version}
+main: me.glaremasters.multieconomy.MultiEconomy
+authors: [blockslayer22]
+description: MultiEconomy
