@@ -14,9 +14,9 @@ gems:
 tokens:
   name: "Tokens"
   symbol: "$$"
-  start_amount: 100
+  start_amount: 25
 
 crystals:
   name: "Crystals"
   symbol: "$$$"
-  start_amount: 100
+  start_amount: 50
