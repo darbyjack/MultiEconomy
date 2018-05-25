@@ -7,3 +7,5 @@ description: MultiEconomy
 commands:
   mebalance:
     description: mebalance
+  meset:
+    description: meset

@@ -24,10 +24,15 @@ crystals:
 messages:
   commands:
     mebalance:
-      invalid-args: "/mebalance [economy] <player>"
-      result: "{user} has {amount} of {economy}"
+      invalid-args: "&6M&eE &8» &7Usage: /mebalance [economy] <player>"
+      result: "&6M&eE &8» &e{user} &fhas &e{amount} &fof &e{economy}"
+    meset:
+      invalid-args: "6M&eE &8» &7Usage: /meset [economy] <player> <amount>"
+      result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been set to &e{amount}"
   error:
-    no-permission: "You do not have permission to run this command!"
-    eco-doesnt-exist: "That economy type doesn't exist!"
-    player-doesnt-exist: "That player does not exist on this server!"
-    data-doesnt-exist: "That user has no data for the economy you checked!"
+    no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
+    eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"
+    player-doesnt-exist: "&6M&eE &8» That player does not exist on this server!"
+    data-doesnt-exist: "&6M&eE &8» That user has no data for the economy you checked!"
+    eco-player-doesnt-exist: "&6M&eE &8» &cThere is no economy data for this user!"
+    not-valid-number: "&6M&eE &8» &cThe input give was not a valid number!"
