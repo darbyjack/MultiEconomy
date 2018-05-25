@@ -30,14 +30,14 @@ public class CMDBalance implements CommandExecutor {
                 return true;
             }
         }
-        String econType = args[0];
+        String econType = args[1];
 
         if (!c.getStringList("economy-types").contains(econType)) {
             sender.sendMessage(color(c.getString("messages.error.eco-doesnt-exist")));
             return true;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
         if (offlinePlayer == null) {
             sender.sendMessage(color(c.getString("messages.error.player-doesnt-exist")));
             return true;
