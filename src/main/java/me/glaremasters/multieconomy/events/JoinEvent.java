@@ -1,11 +1,9 @@
 package me.glaremasters.multieconomy.events;
 
 import me.glaremasters.multieconomy.MultiEconomy;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import sun.misc.UUDecoder;
 
 /**
  * Created by GlareMasters on 5/24/2018.
