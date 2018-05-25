@@ -3,3 +3,7 @@ version: ${project.version}
 main: me.glaremasters.multieconomy.MultiEconomy
 authors: [blockslayer22]
 description: MultiEconomy
+
+commands:
+  mebalance:
+    description: mebalance

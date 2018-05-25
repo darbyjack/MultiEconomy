@@ -20,3 +20,14 @@ crystals:
   name: "Crystals"
   symbol: "$$$"
   start_amount: 50
+
+messages:
+  commands:
+    mebalance:
+      invalid-args: "/mebalance [economy] <player>"
+      result: "{user} has {amount} of {economy}"
+  error:
+    no-permission: "You do not have permission to run this command!"
+    eco-doesnt-exist: "That economy type doesn't exist!"
+    player-doesnt-exist: "That player does not exist on this server!"
+    data-doesnt-exist: "That user has no data for the economy you checked!"
