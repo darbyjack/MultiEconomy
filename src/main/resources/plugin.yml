@@ -9,3 +9,5 @@ commands:
     description: mebalance
   meset:
     description: meset
+  mereset:
+    description: mereset

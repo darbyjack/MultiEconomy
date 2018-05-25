@@ -24,11 +24,14 @@ crystals:
 messages:
   commands:
     mebalance:
-      invalid-args: "&6M&eE &8» &7Usage: /mebalance <player> [economy]"
+      invalid-args: "&6M&eE &8» &7Usage: /mebalance <player> <economy>"
       result: "&6M&eE &8» &e{user} &fhas &e{amount} &fof &e{economy}"
     meset:
-      invalid-args: "6M&eE &8» &7Usage: /meset [economy] <player> <amount>"
+      invalid-args: "6M&eE &8» &7Usage: /meset <player> <economy> <amount>"
       result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been set to &e{amount}"
+    mereset:
+      invalid-args: "6M&eE &8» &7Usage: /mereset <player> <economy>"
+      result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been reset to &e{amount}"
   error:
     no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
     eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"

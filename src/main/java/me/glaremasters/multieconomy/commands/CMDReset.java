@@ -13,20 +13,19 @@ import org.bukkit.entity.Player;
 /**
  * Created by GlareMasters on 5/24/2018.
  */
-public class CMDSet implements CommandExecutor {
+public class CMDReset implements CommandExecutor {
 
     private FileConfiguration c = MultiEconomy.getI().getConfig();
-    Integer amount;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length != 3) {
-            sender.sendMessage(color(c.getString("messages.commands.meset.invalid-args")));
+        if (args.length != 2) {
+            sender.sendMessage(color(c.getString("messages.commands.mereset.invalid-args")));
             return true;
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("me.set")) {
+            if (!player.hasPermission("me.reset")) {
                 player.sendMessage(color(c.getString("messages.error.no-permission")));
                 return true;
             }
@@ -50,17 +49,12 @@ public class CMDSet implements CommandExecutor {
             return true;
         }
 
-        try {
-            this.amount = Integer.valueOf(args[2]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(color(c.getString("messages.error.not-valid-number")));
-            return true;
-        }
+        int amount = c.getInt(econType + ".start_amount");
 
         MultiEconomy.getI().dataFileConfig.set(UUID + "." + econType, amount);
         MultiEconomy.getI().saveData();
 
-        sender.sendMessage(color(c.getString("messages.commands.meset.result")
+        sender.sendMessage(color(c.getString("messages.commands.mereset.result")
                 .replace("{user}", offlinePlayer.getName())
                 .replace("{amount}", String.valueOf(amount))
                 .replace("{economy}", econType)));
