@@ -38,6 +38,9 @@ messages:
     metake:
       invalid-args: "&6M&eE &8» &7Usage: /metake <player> <economy> <amount>"
       result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas is now &e{amount}"
+    melist:
+      invalid-args: "&6M&eE &8» &7Usage: /melist"
+      result: "&6M&eE &8» &eThe following economy types are available: {currencies}"
   error:
     no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
     eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"
