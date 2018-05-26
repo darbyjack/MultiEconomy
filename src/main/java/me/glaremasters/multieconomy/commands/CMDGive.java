@@ -31,7 +31,7 @@ public class CMDGive implements CommandExecutor {
                 return true;
             }
         }
-        String econType = args[1];
+        String econType = args[1].toLowerCase();
 
         if (!c.getStringList("economy-types").contains(econType)) {
             sender.sendMessage(color(c.getString("messages.error.eco-doesnt-exist")));
