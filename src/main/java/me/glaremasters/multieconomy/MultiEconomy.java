@@ -7,6 +7,7 @@ import me.glaremasters.multieconomy.commands.CMDBalance;
 import me.glaremasters.multieconomy.commands.CMDGive;
 import me.glaremasters.multieconomy.commands.CMDReset;
 import me.glaremasters.multieconomy.commands.CMDSet;
+import me.glaremasters.multieconomy.commands.CMDTake;
 import me.glaremasters.multieconomy.events.JoinEvent;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +34,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("meset").setExecutor(new CMDSet());
         getCommand("mereset").setExecutor(new CMDReset());
         getCommand("megive").setExecutor(new CMDGive());
+        getCommand("metake").setExecutor(new CMDTake());
     }
 
     @Override
