@@ -32,6 +32,9 @@ messages:
     mereset:
       invalid-args: "6M&eE &8» &7Usage: /mereset <player> <economy>"
       result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been reset to &e{amount}"
+    megive:
+      invalid-args: "6M&eE &8» &7Usage: /megive <player> <economy> <amount>"
+      result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas is now &e{amount}"
   error:
     no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
     eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"

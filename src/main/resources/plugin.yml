@@ -11,3 +11,5 @@ commands:
     description: meset
   mereset:
     description: mereset
+  megive:
+    description: megive

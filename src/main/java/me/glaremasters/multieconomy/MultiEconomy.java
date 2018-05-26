@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import me.glaremasters.multieconomy.commands.CMDBalance;
+import me.glaremasters.multieconomy.commands.CMDGive;
 import me.glaremasters.multieconomy.commands.CMDReset;
 import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.events.JoinEvent;
@@ -31,6 +32,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("mebalance").setExecutor(new CMDBalance());
         getCommand("meset").setExecutor(new CMDSet());
         getCommand("mereset").setExecutor(new CMDReset());
+        getCommand("megive").setExecutor(new CMDGive());
     }
 
     @Override
