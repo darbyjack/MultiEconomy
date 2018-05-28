@@ -3,6 +3,7 @@ package me.glaremasters.multieconomy.commands;
 import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
+import static me.glaremasters.multieconomy.api.API.setAmount;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -55,9 +56,10 @@ public class CMDPay implements CommandExecutor {
             int endBal = curBalance - amount;
             int targetBeforeBalance = Integer.valueOf(multiEconomy.dataFileConfig.get(UUID + "." + econType).toString());
             int targetEndBalance = targetBeforeBalance + amount;
-            multiEconomy.dataFileConfig.set(player.getUniqueId().toString() + "." + econType, endBal);
-            multiEconomy.dataFileConfig.set(UUID + "." + econType, targetEndBalance);
-            MultiEconomy.getI().saveData();
+
+            setAmount(player.getUniqueId().toString(), econType, endBal);
+            setAmount(UUID, econType, targetEndBalance);
+
             player.sendMessage(color(c.getString("messages.commands.mepay.result")
                     .replace("{user}", offlinePlayer.getName())
                     .replace("{amount}", String.valueOf(amount))
