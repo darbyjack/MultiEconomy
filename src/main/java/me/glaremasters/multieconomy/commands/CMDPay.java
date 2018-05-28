@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
@@ -41,10 +42,7 @@ public class CMDPay implements CommandExecutor {
             }
             String UUID = offlinePlayer.getUniqueId().toString();
             String econType = args[1].toLowerCase();
-            if (!c.getStringList("economy-types").contains(econType)) {
-                player.sendMessage(color(c.getString("messages.error.eco-doesnt-exist")));
-                return true;
-            }
+            if (!checkEcoType(sender, econType)) return true;
             try {
                 this.amount = Integer.valueOf(args[2]);
             } catch (NumberFormatException e) {
