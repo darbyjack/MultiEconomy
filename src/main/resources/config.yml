@@ -1,5 +1,18 @@
 # MultiEconomy
 
+# Example of creating a new economy:
+
+# If I wanted to create a new economy called coins, I would do the following...
+# I would add the word coins to the economy-types list below
+# Then you would create something like this....
+
+# coins:
+#   name: Coins
+#   symbol: YourSymbolHere
+#   start_amount: 100
+
+# If you don't follow the example above you have a good chance of breaking the plugin.
+
 economy-types:
 - "gems"
 - "tokens"
