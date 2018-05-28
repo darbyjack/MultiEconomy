@@ -19,3 +19,5 @@ commands:
     description: melist
   mebalances:
     description: mebalances
+  mepay:
+    description: mepay

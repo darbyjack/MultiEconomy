@@ -44,6 +44,9 @@ messages:
     melist:
       invalid-args: "&6M&eE &8» &7Usage: /melist"
       result: "&6M&eE &8» &eThe following economy types are available: {currencies}"
+    mepay:
+      invalid-args: "&6M&eE &8» &7Usage: /mepay <player> <economy> <amount>"
+      result: "&6M&eE &8» &eYou have sent &f{amount} of &e{economy} &f to {user}"
   error:
     no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
     eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"
@@ -52,3 +55,4 @@ messages:
     eco-player-doesnt-exist: "&6M&eE &8» &cThere is no economy data for this user!"
     not-valid-number: "&6M&eE &8» &cThe input give was not a valid number!"
     player-doesnt-have-enough: "&6M&eE &8» &cThat player doesn't have that many {economy}!"
+    not-enough-pay: "&6M&eE &8» &cYou don't have enough {economy}!"

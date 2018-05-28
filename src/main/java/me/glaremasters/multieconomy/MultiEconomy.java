@@ -7,6 +7,7 @@ import me.glaremasters.multieconomy.commands.CMDBalance;
 import me.glaremasters.multieconomy.commands.CMDBalances;
 import me.glaremasters.multieconomy.commands.CMDGive;
 import me.glaremasters.multieconomy.commands.CMDList;
+import me.glaremasters.multieconomy.commands.CMDPay;
 import me.glaremasters.multieconomy.commands.CMDReset;
 import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
@@ -39,6 +40,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("metake").setExecutor(new CMDTake(this));
         getCommand("melist").setExecutor(new CMDList());
         getCommand("mebalances").setExecutor(new CMDBalances(this));
+        getCommand("mepay").setExecutor(new CMDPay(this));
     }
 
     @Override
