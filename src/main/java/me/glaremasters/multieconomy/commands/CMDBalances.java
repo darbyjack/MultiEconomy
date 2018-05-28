@@ -46,9 +46,9 @@ public class CMDBalances implements CommandExecutor {
         StringBuilder sb = new StringBuilder();
 
         for (String type : c.getStringList("economy-types")) {
-            sb.append("\n" + multiEconomy.dataFileConfig.get(UUID + "." + type) + " " + type);
+            sb.append("\n" + c.getString(type + ".symbol") + multiEconomy.dataFileConfig.get(UUID + "." + type) + " " + c.getString(type + ".name"));
         }
-        sender.sendMessage(color(c.getString("messages.commands.melist.result").replace("{currencies}", sb.toString())));
+        sender.sendMessage(color(c.getString("messages.commands.mebalances.result").replace("{currencies}", sb.toString()).replace("{user}", offlinePlayer.getName())));
         return true;
     }
 
