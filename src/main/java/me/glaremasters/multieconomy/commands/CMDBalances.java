@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -30,10 +31,7 @@ public class CMDBalances implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("me.balances")) {
-                player.sendMessage(color(c.getString("messages.error.no-permission")));
-                return true;
-            }
+            if (checkPerms(player, "me.balances")) return true;
         }
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);

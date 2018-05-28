@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -31,10 +32,7 @@ public class CMDTake implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("me.take")) {
-                player.sendMessage(color(c.getString("messages.error.no-permission")));
-                return true;
-            }
+            if (checkPerms(player, "me.take")) return true;
         }
         String econType = args[1].toLowerCase();
 

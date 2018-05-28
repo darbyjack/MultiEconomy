@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.command.Command;
@@ -19,10 +20,7 @@ public class CMDHelp implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("me.help")) {
-                player.sendMessage(color(c.getString("messages.error.no-permission")));
-                return true;
-            }
+            if (checkPerms(player, "me.help")) return true;
         }
 
         StringBuilder sb = new StringBuilder();

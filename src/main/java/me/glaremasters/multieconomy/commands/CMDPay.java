@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -27,10 +28,7 @@ public class CMDPay implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("me.pay")) {
-                player.sendMessage(color(c.getString("messages.error.no-permission")));
-                return true;
-            }
+            if (checkPerms(player, "me.pay")) return true;
             if (args.length != 3) {
                 player.sendMessage(color(c.getString("messages.commands.mepay.invalid-args")));
                 return true;
