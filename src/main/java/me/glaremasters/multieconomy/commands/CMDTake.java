@@ -3,6 +3,7 @@ package me.glaremasters.multieconomy.commands;
 import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
+import static me.glaremasters.multieconomy.api.API.setAmount;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -65,8 +66,7 @@ public class CMDTake implements CommandExecutor {
 
         int endAmount = beforeAmount - amount;
 
-        multiEconomy.dataFileConfig.set(UUID + "." + econType, endAmount);
-        multiEconomy.saveData();
+        setAmount(UUID, econType, endAmount);
 
         sender.sendMessage(color(c.getString("messages.commands.metake.result")
                 .replace("{user}", offlinePlayer.getName())

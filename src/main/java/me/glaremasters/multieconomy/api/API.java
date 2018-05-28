@@ -67,4 +67,15 @@ public class API {
         return true;
     }
 
+    /**
+     * Set the new balance of a player
+     * @param UUID the UUID of the player
+     * @param econType the type of economy to change
+     * @param amount the amount to set it as
+     */
+    public static void setAmount(String UUID, String econType, int amount) {
+        MultiEconomy.getI().dataFileConfig.set(UUID + "." + econType, amount);
+        MultiEconomy.getI().saveData();
+    }
+
 }

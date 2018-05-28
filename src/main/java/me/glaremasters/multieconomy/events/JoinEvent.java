@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.events;
 
+import static me.glaremasters.multieconomy.api.API.setAmount;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -24,7 +25,7 @@ public class JoinEvent implements Listener {
         String UUID = event.getPlayer().getUniqueId().toString();
         for (String type : c.getStringList("economy-types")) {
             if (dC.get(UUID + "." + type) == null) {
-                dC.set(UUID + "." + type, c.getInt(type + ".start_amount"));
+                setAmount(UUID, type, c.getInt(type + ".start_amount"));
             }
         }
         i.saveData();

@@ -3,6 +3,7 @@ package me.glaremasters.multieconomy.commands;
 import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
+import static me.glaremasters.multieconomy.api.API.setAmount;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -51,8 +52,7 @@ public class CMDReset implements CommandExecutor {
 
         int amount = c.getInt(econType + ".start_amount");
 
-        multiEconomy.dataFileConfig.set(UUID + "." + econType, amount);
-        MultiEconomy.getI().saveData();
+        setAmount(UUID, econType, amount);
 
         sender.sendMessage(color(c.getString("messages.commands.mereset.result")
                 .replace("{user}", offlinePlayer.getName())
