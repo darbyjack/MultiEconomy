@@ -24,3 +24,5 @@ commands:
     description: mepay
   mehelp:
     description: mehelp
+  meversion:
+    description: meversion

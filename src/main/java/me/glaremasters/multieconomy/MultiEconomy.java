@@ -16,8 +16,10 @@ import me.glaremasters.multieconomy.commands.CMDPay;
 import me.glaremasters.multieconomy.commands.CMDReset;
 import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
+import me.glaremasters.multieconomy.commands.CMDVersion;
 import me.glaremasters.multieconomy.events.AnnouncementListener;
 import me.glaremasters.multieconomy.events.JoinEvent;
+import me.glaremasters.multieconomy.updater.SpigotUpdater;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,10 +53,25 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("mebalances").setExecutor(new CMDBalances(this));
         getCommand("mepay").setExecutor(new CMDPay(this));
         getCommand("mehelp").setExecutor(new CMDHelp());
+        getCommand("meversion").setExecutor(new CMDVersion());
 
         getServer().getPluginManager().registerEvents(new AnnouncementListener(this), this);
 
+        SpigotUpdater updater = new SpigotUpdater(this, 57245);
 
+        try {
+            // If there's an update, tell the user that they can update
+            if (updater.checkForUpdates()) {
+                getLogger()
+                        .info("You appear to be running a version other than our latest stable release."
+                                + " You can download our newest version at: " + updater
+                                .getResourceURL());
+            }
+        } catch (Exception e) {
+            // If it can't check for an update, tell the user and throw an error.
+            getLogger().info("Could not check for updates! Stacktrace:");
+            e.printStackTrace();
+        }
 
     }
 
