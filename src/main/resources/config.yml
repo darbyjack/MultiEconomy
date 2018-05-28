@@ -22,6 +22,15 @@ crystals:
   start_amount: 50
 
 messages:
+  help:
+  - "&6M&eE &8» &7Usage: /mebalance <player> <economy>"
+  - "&6M&eE &8» &7Usage: /mebalances <player>"
+  - "&6M&eE &8» &7Usage: /meset <player> <economy> <amount>"
+  - "&6M&eE &8» &7Usage: /mereset <player> <economy>"
+  - "&6M&eE &8» &7Usage: /megive <player> <economy> <amount>"
+  - "&6M&eE &8» &7Usage: /metake <player> <economy> <amount>"
+  - "&6M&eE &8» &7Usage: /melist"
+  - "&6M&eE &8» &7Usage: /mepay <player> <economy> <amount>"
   commands:
     mebalance:
       invalid-args: "&6M&eE &8» &7Usage: /mebalance <player> <economy>"
@@ -30,10 +39,10 @@ messages:
       invalid-args: "&6M&eE &8» &7Usage: /mebalances <player>"
       result: "&6M&eE &8» &e{user} has the following amount of each currency: {currencies}"
     meset:
-      invalid-args: "6M&eE &8» &7Usage: /meset <player> <economy> <amount>"
+      invalid-args: "&6M&eE &8» &7Usage: /meset <player> <economy> <amount>"
       result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been set to &e{amount}"
     mereset:
-      invalid-args: "6M&eE &8» &7Usage: /mereset <player> <economy>"
+      invalid-args: "&6M&eE &8» &7Usage: /mereset <player> <economy>"
       result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been reset to &e{amount}"
     megive:
       invalid-args: "&6M&eE &8» &7Usage: /megive <player> <economy> <amount>"

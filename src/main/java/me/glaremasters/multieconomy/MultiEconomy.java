@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import me.glaremasters.multieconomy.commands.CMDBalance;
 import me.glaremasters.multieconomy.commands.CMDBalances;
 import me.glaremasters.multieconomy.commands.CMDGive;
+import me.glaremasters.multieconomy.commands.CMDHelp;
 import me.glaremasters.multieconomy.commands.CMDList;
 import me.glaremasters.multieconomy.commands.CMDPay;
 import me.glaremasters.multieconomy.commands.CMDReset;
@@ -41,6 +42,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("melist").setExecutor(new CMDList());
         getCommand("mebalances").setExecutor(new CMDBalances(this));
         getCommand("mepay").setExecutor(new CMDPay(this));
+        getCommand("mehelp").setExecutor(new CMDHelp());
     }
 
     @Override
