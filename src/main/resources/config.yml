@@ -26,6 +26,9 @@ messages:
     mebalance:
       invalid-args: "&6M&eE &8» &7Usage: /mebalance <player> <economy>"
       result: "&6M&eE &8» &e{user} &fhas &e{amount} &fof &e{economy}"
+    mebalances:
+      invalid-args: "&6M&eE &8» &7Usage: /mebalances <player>"
+      result: "&6M&eE &8» &e{user} has the following amount of each currency: {currencies}"
     meset:
       invalid-args: "6M&eE &8» &7Usage: /meset <player> <economy> <amount>"
       result: "&6M&eE &8» &e{user}'s &fbalance for &e{economy} &fhas been set to &e{amount}"

@@ -17,3 +17,5 @@ commands:
     description: metake
   melist:
     description: melist
+  mebalances:
+    description: mebalances

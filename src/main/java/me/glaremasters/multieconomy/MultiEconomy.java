@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import me.glaremasters.multieconomy.commands.CMDBalance;
+import me.glaremasters.multieconomy.commands.CMDBalances;
 import me.glaremasters.multieconomy.commands.CMDGive;
 import me.glaremasters.multieconomy.commands.CMDList;
 import me.glaremasters.multieconomy.commands.CMDReset;
@@ -31,12 +32,13 @@ public final class MultiEconomy extends JavaPlugin {
         saveData();
 
         getServer().getPluginManager().registerEvents(new JoinEvent(i), this);
-        getCommand("mebalance").setExecutor(new CMDBalance(multiEconomy));
-        getCommand("meset").setExecutor(new CMDSet(multiEconomy));
-        getCommand("mereset").setExecutor(new CMDReset(multiEconomy));
-        getCommand("megive").setExecutor(new CMDGive(multiEconomy));
-        getCommand("metake").setExecutor(new CMDTake(multiEconomy));
-        getCommand("melist").setExecutor(new CMDList(multiEconomy));
+        getCommand("mebalance").setExecutor(new CMDBalance(this));
+        getCommand("meset").setExecutor(new CMDSet(this));
+        getCommand("mereset").setExecutor(new CMDReset(this));
+        getCommand("megive").setExecutor(new CMDGive(this));
+        getCommand("metake").setExecutor(new CMDTake(this));
+        getCommand("melist").setExecutor(new CMDList());
+        getCommand("mebalances").setExecutor(new CMDBalances(this));
     }
 
     @Override
