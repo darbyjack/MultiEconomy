@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class AnnouncementListener implements Listener {
 
-    private Set<UUID> ALREADY_INFORMED = new HashSet<>();
+    private static Set<UUID> ALREADY_INFORMED = new HashSet<>();
 
     private MultiEconomy multiEconomy;
 
@@ -27,13 +27,18 @@ public class AnnouncementListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-            multiEconomy.getServer().getScheduler().scheduleAsyncDelayedTask(multiEconomy, () -> {
-                if (player.isOp()) {
-                    if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
-                        JSONMessage.create(color(multiEconomy.getConfig().getString("plugin-prefix") + " &fAnnouncements")).tooltip(multiEconomy.getAnnouncements()).openURL(multiEconomy.getDescription().getWebsite()).send(player);ALREADY_INFORMED.add(player.getUniqueId());
-                    }
+        multiEconomy.getServer().getScheduler().scheduleAsyncDelayedTask(multiEconomy, () -> {
+            if (player.isOp()) {
+                if (!ALREADY_INFORMED.contains(player.getUniqueId())) {
+                    JSONMessage.create(color(multiEconomy.getConfig().getString("plugin-prefix")
+                            + " &fAnnouncements"))
+                            .tooltip(multiEconomy.getAnnouncements())
+                            .openURL(multiEconomy.getDescription().getWebsite())
+                            .send(player);
+                    ALREADY_INFORMED.add(player.getUniqueId());
                 }
-            }, 70L);
+            }
+        }, 70L);
     }
 
 }
