@@ -31,7 +31,7 @@ public class CMDBalances implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.balances")) return true;
+            if (!checkPerms(player, "me.balances")) return true;
         }
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);

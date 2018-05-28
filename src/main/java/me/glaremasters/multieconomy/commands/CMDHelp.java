@@ -20,7 +20,7 @@ public class CMDHelp implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.help")) return true;
+            if (!checkPerms(player, "me.help")) return true;
         }
 
         StringBuilder sb = new StringBuilder();

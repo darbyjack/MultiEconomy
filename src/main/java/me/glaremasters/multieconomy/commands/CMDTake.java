@@ -32,7 +32,7 @@ public class CMDTake implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.take")) return true;
+            if (!checkPerms(player, "me.take")) return true;
         }
         String econType = args[1].toLowerCase();
 

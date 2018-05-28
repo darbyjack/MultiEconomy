@@ -24,7 +24,7 @@ public class CMDList implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.list")) return true;
+            if (!checkPerms(player, "me.list")) return true;
         }
 
         StringBuilder sb = new StringBuilder();

@@ -28,7 +28,7 @@ public class CMDPay implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.pay")) return true;
+            if (!checkPerms(player, "me.pay")) return true;
             if (args.length != 3) {
                 player.sendMessage(color(c.getString("messages.commands.mepay.invalid-args")));
                 return true;

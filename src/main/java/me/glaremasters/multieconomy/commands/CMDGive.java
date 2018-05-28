@@ -33,7 +33,7 @@ public class CMDGive implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.give")) return true;
+            if (!checkPerms(player, "me.give")) return true;
         }
         String econType = args[1].toLowerCase();
 

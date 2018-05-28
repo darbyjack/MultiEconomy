@@ -33,7 +33,7 @@ public class CMDSet implements CommandExecutor {
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (checkPerms(player, "me.set")) return true;
+            if (!checkPerms(player, "me.set")) return true;
         }
         String econType = args[1].toLowerCase();
 
