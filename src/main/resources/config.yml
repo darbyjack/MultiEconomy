@@ -13,12 +13,12 @@ gems:
 
 tokens:
   name: "Tokens"
-  symbol: "$$"
+  symbol: "€"
   start_amount: 25
 
 crystals:
   name: "Crystals"
-  symbol: "$$$"
+  symbol: "฿"
   start_amount: 50
 
 plugin-prefix: "[&6Multi&eEconomy&f]"
