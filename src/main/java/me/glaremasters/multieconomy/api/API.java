@@ -26,6 +26,12 @@ public class API {
         return false;
     }
 
+    /**
+     * Check if the economy type exist on the server
+     * @param sender the person who sent the command
+     * @param type the type of economy to check
+     * @return if true / false based on if the economy type exist
+     */
     public static boolean checkEcoType(CommandSender sender, String type) {
         if (c.getStringList("economy-types").contains(type)) return true;
         sender.sendMessage(color(c.getString("messages.error.eco-doesnt-exist")));
