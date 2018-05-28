@@ -2,6 +2,7 @@ package me.glaremasters.multieconomy.commands;
 
 import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
+import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -36,10 +37,7 @@ public class CMDPay implements CommandExecutor {
             }
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-            if (offlinePlayer == null) {
-                player.sendMessage(color(c.getString("messages.error.player-doesnt-exist")));
-                return true;
-            }
+            if (!checkPlayerExist(sender, offlinePlayer)) return true;
             String UUID = offlinePlayer.getUniqueId().toString();
             String econType = args[1].toLowerCase();
             if (!checkEcoType(sender, econType)) return true;

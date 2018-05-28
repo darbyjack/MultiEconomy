@@ -2,6 +2,7 @@ package me.glaremasters.multieconomy.api;
 
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,7 +13,6 @@ import org.bukkit.entity.Player;
 public class API {
 
     private static FileConfiguration c = MultiEconomy.getI().getConfig();
-
 
     /**
      * Check the permissions of the player running the command
@@ -36,6 +36,35 @@ public class API {
         if (c.getStringList("economy-types").contains(type)) return true;
         sender.sendMessage(color(c.getString("messages.error.eco-doesnt-exist")));
         return false;
+    }
+
+    /**
+     * Check if user has economy data for that type
+     * @param sender the person who sent the command
+     * @param UUID the UUID of the player to check
+     * @param econType the economy type
+     * @return if true / false based on if the user has economy data for the specified currency
+     */
+    public static boolean checkDataExist(CommandSender sender, String UUID, String econType) {
+        if (MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType) == null) {
+            sender.sendMessage(color(c.getString("messages.error.data-doesnt-exist")));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check if a player exist in the server data
+     * @param sender the person who sent the command
+     * @param offlinePlayer the offline player to check
+     * @return if true / false based on if the user has existed on the server
+     */
+    public static boolean checkPlayerExist(CommandSender sender, OfflinePlayer offlinePlayer) {
+        if (offlinePlayer == null) {
+            sender.sendMessage(color(c.getString("messages.error.player-doesnt-exist")));
+            return false;
+        }
+        return true;
     }
 
 }

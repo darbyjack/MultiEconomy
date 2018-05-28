@@ -1,6 +1,7 @@
 package me.glaremasters.multieconomy.commands;
 
 import static me.glaremasters.multieconomy.api.API.checkPerms;
+import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
 import org.bukkit.Bukkit;
@@ -35,10 +36,7 @@ public class CMDBalances implements CommandExecutor {
         }
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-        if (offlinePlayer == null) {
-            sender.sendMessage(color(c.getString("messages.error.player-doesnt-exist")));
-            return true;
-        }
+        if (!checkPlayerExist(sender, offlinePlayer)) return true;
         String UUID = offlinePlayer.getUniqueId().toString();
 
         StringBuilder sb = new StringBuilder();
