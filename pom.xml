@@ -62,6 +62,10 @@
       <id>sonatype</id>
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
+    <repository>
+      <id>rayzr-repo</id>
+      <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -70,6 +74,16 @@
       <artifactId>spigot-api</artifactId>
       <version>1.12.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>me.rayzr522</groupId>
+      <artifactId>jsonmessage</artifactId>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 </project>

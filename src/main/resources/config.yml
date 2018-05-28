@@ -21,6 +21,8 @@ crystals:
   symbol: "$$$"
   start_amount: 50
 
+plugin-prefix: "[&6Multi&eEconomy&f]"
+
 messages:
   help:
   - "&6M&eE &8» &7Usage: /mebalance <player> <economy>"
