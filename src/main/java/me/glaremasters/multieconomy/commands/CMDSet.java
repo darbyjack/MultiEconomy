@@ -16,7 +16,13 @@ import org.bukkit.entity.Player;
 public class CMDSet implements CommandExecutor {
 
     private FileConfiguration c = MultiEconomy.getI().getConfig();
-    Integer amount;
+    private Integer amount;
+
+    private MultiEconomy multiEconomy;
+
+    public CMDSet(MultiEconomy multiEconomy) {
+        this.multiEconomy = multiEconomy;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -45,7 +51,7 @@ public class CMDSet implements CommandExecutor {
         }
         String UUID = offlinePlayer.getUniqueId().toString();
 
-        if (MultiEconomy.getI().dataFileConfig.get(UUID) == null) {
+        if (multiEconomy.dataFileConfig.get(UUID) == null) {
             sender.sendMessage(color(c.getString("messages.error.eco-player-doesnt-exist")));
             return true;
         }
@@ -57,7 +63,7 @@ public class CMDSet implements CommandExecutor {
             return true;
         }
 
-        MultiEconomy.getI().dataFileConfig.set(UUID + "." + econType, amount);
+        multiEconomy.dataFileConfig.set(UUID + "." + econType, amount);
         MultiEconomy.getI().saveData();
 
         sender.sendMessage(color(c.getString("messages.commands.meset.result")

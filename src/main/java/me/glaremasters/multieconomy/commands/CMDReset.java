@@ -17,6 +17,12 @@ public class CMDReset implements CommandExecutor {
 
     private FileConfiguration c = MultiEconomy.getI().getConfig();
 
+    private MultiEconomy multiEconomy;
+
+    public CMDReset(MultiEconomy multiEconomy) {
+        this.multiEconomy = multiEconomy;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length != 2) {
@@ -44,14 +50,14 @@ public class CMDReset implements CommandExecutor {
         }
         String UUID = offlinePlayer.getUniqueId().toString();
 
-        if (MultiEconomy.getI().dataFileConfig.get(UUID) == null) {
+        if (multiEconomy.dataFileConfig.get(UUID) == null) {
             sender.sendMessage(color(c.getString("messages.error.eco-player-doesnt-exist")));
             return true;
         }
 
         int amount = c.getInt(econType + ".start_amount");
 
-        MultiEconomy.getI().dataFileConfig.set(UUID + "." + econType, amount);
+        multiEconomy.dataFileConfig.set(UUID + "." + econType, amount);
         MultiEconomy.getI().saveData();
 
         sender.sendMessage(color(c.getString("messages.commands.mereset.result")

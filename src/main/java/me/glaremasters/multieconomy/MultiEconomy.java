@@ -31,12 +31,12 @@ public final class MultiEconomy extends JavaPlugin {
         saveData();
 
         getServer().getPluginManager().registerEvents(new JoinEvent(i), this);
-        getCommand("mebalance").setExecutor(new CMDBalance());
-        getCommand("meset").setExecutor(new CMDSet());
-        getCommand("mereset").setExecutor(new CMDReset());
-        getCommand("megive").setExecutor(new CMDGive());
-        getCommand("metake").setExecutor(new CMDTake());
-        getCommand("melist").setExecutor(new CMDList());
+        getCommand("mebalance").setExecutor(new CMDBalance(multiEconomy));
+        getCommand("meset").setExecutor(new CMDSet(multiEconomy));
+        getCommand("mereset").setExecutor(new CMDReset(multiEconomy));
+        getCommand("megive").setExecutor(new CMDGive(multiEconomy));
+        getCommand("metake").setExecutor(new CMDTake(multiEconomy));
+        getCommand("melist").setExecutor(new CMDList(multiEconomy));
     }
 
     @Override

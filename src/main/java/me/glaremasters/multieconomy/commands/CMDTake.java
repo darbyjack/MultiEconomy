@@ -16,7 +16,12 @@ import org.bukkit.entity.Player;
 public class CMDTake implements CommandExecutor {
 
     private FileConfiguration c = MultiEconomy.getI().getConfig();
-    Integer amount;
+    private Integer amount;
+    private MultiEconomy multiEconomy;
+
+    public CMDTake(MultiEconomy multiEconomy) {
+        this.multiEconomy = multiEconomy;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -45,7 +50,7 @@ public class CMDTake implements CommandExecutor {
         }
         String UUID = offlinePlayer.getUniqueId().toString();
 
-        if (MultiEconomy.getI().dataFileConfig.get(UUID) == null) {
+        if (multiEconomy.dataFileConfig.get(UUID) == null) {
             sender.sendMessage(color(c.getString("messages.error.eco-player-doesnt-exist")));
             return true;
         }
@@ -57,7 +62,7 @@ public class CMDTake implements CommandExecutor {
             return true;
         }
 
-        int beforeAmount = Integer.valueOf(MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType).toString());
+        int beforeAmount = Integer.valueOf(multiEconomy.dataFileConfig.get(UUID + "." + econType).toString());
 
         if (amount > beforeAmount) {
             sender.sendMessage(color(c.getString("messages.error.player-doesnt-have-enough").replace("{economy}", econType)));
@@ -66,8 +71,8 @@ public class CMDTake implements CommandExecutor {
 
         int endAmount = beforeAmount - amount;
 
-        MultiEconomy.getI().dataFileConfig.set(UUID + "." + econType, endAmount);
-        MultiEconomy.getI().saveData();
+        multiEconomy.dataFileConfig.set(UUID + "." + econType, endAmount);
+        multiEconomy.saveData();
 
         sender.sendMessage(color(c.getString("messages.commands.metake.result")
                 .replace("{user}", offlinePlayer.getName())

@@ -17,6 +17,12 @@ public class CMDBalance implements CommandExecutor {
 
     private FileConfiguration c = MultiEconomy.getI().getConfig();
 
+    private MultiEconomy multiEconomy;
+
+    public CMDBalance(MultiEconomy multiEconomy) {
+        this.multiEconomy = multiEconomy;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length != 2) {
@@ -44,12 +50,12 @@ public class CMDBalance implements CommandExecutor {
         }
         String UUID = offlinePlayer.getUniqueId().toString();
 
-        if (MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType) == null) {
+        if (multiEconomy.dataFileConfig.get(UUID + "." + econType) == null) {
             sender.sendMessage(color(c.getString("messages.error.data-doesnt-exist")));
             return true;
         }
 
-        String result = MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType).toString();
+        String result = multiEconomy.dataFileConfig.get(UUID + "." + econType).toString();
 
         sender.sendMessage(color(c.getString("messages.commands.mebalance.result")
                 .replace("{user}", offlinePlayer.getName())
