@@ -19,6 +19,7 @@ import me.glaremasters.multieconomy.commands.CMDTake;
 import me.glaremasters.multieconomy.commands.CMDVersion;
 import me.glaremasters.multieconomy.events.AnnouncementListener;
 import me.glaremasters.multieconomy.events.JoinEvent;
+import me.glaremasters.multieconomy.metrics.Metrics;
 import me.glaremasters.multieconomy.updater.SpigotUpdater;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
@@ -42,6 +43,9 @@ public final class MultiEconomy extends JavaPlugin {
         i = this;
         saveDefaultConfig();
         saveData();
+
+        Metrics metrics = new Metrics(this);
+
         Bukkit.getConsoleSender().sendMessage(getAnnouncements());
         getServer().getPluginManager().registerEvents(new JoinEvent(i), this);
         getCommand("mebalance").setExecutor(new CMDBalance(this));
