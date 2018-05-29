@@ -11,23 +11,17 @@ import org.bukkit.event.HandlerList;
 public final class CustomPayEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
-    private OfflinePlayer p1;
-    private OfflinePlayer p2;
+    private OfflinePlayer player;
+    private OfflinePlayer target;
     private boolean cancelled;
-    private int number;
+    private int amount;
+    private String econType;
 
-    public CustomPayEvent(OfflinePlayer player, OfflinePlayer target, int amount) {
-        p1 = player;
-        p2 = target;
-        number = amount;
-    }
-
-    public OfflinePlayer getP1() {
-        return p1;
-    }
-
-    public OfflinePlayer getP2() {
-        return p2;
+    public CustomPayEvent(OfflinePlayer player, OfflinePlayer target, String econType, int amount) {
+        this.player = player;
+        this.target = target;
+        this.econType = econType;
+        this.amount = amount;
     }
 
     @Override
@@ -40,9 +34,6 @@ public final class CustomPayEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    public int getNumber() {
-        return number;
-    }
 
     public HandlerList getHandlers() {
         return handlers;
@@ -50,5 +41,21 @@ public final class CustomPayEvent extends Event implements Cancellable {
 
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+    public OfflinePlayer getPlayer() {
+        return player;
+    }
+
+    public OfflinePlayer getTarget() {
+        return target;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getEconType() {
+        return econType;
     }
 }
