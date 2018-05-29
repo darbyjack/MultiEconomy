@@ -10,6 +10,8 @@
 #   name: Coins
 #   symbol: YourSymbolHere
 #   start_amount: 100
+#   item: BOOK
+#   slot: 3
 
 # If you don't follow the example above you have a good chance of breaking the plugin.
 
