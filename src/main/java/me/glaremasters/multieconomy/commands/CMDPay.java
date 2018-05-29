@@ -6,6 +6,7 @@ import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
 import static me.glaremasters.multieconomy.api.API.setAmount;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
 import me.glaremasters.multieconomy.MultiEconomy;
+import me.glaremasters.multieconomy.events.custom.CustomPayEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -57,9 +58,16 @@ public class CMDPay implements CommandExecutor {
             int targetBeforeBalance = Integer.valueOf(multiEconomy.dataFileConfig.get(UUID + "." + econType).toString());
             int targetEndBalance = targetBeforeBalance + amount;
 
-            setAmount(player.getUniqueId().toString(), econType, endBal);
-            setAmount(UUID, econType, targetEndBalance);
+            CustomPayEvent event = new CustomPayEvent(player, offlinePlayer, amount);
+            Bukkit.getServer().getPluginManager().callEvent(event);
 
+            if (!event.isCancelled()) {
+                setAmount(player.getUniqueId().toString(), econType, endBal);
+                setAmount(UUID, econType, targetEndBalance);
+            }
+            else {
+                return true;
+            }
             player.sendMessage(color(c.getString("messages.commands.mepay.result")
                     .replace("{user}", offlinePlayer.getName())
                     .replace("{amount}", String.valueOf(amount))
