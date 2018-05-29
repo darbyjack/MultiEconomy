@@ -18,6 +18,7 @@ import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
 import me.glaremasters.multieconomy.commands.CMDVersion;
 import me.glaremasters.multieconomy.events.AnnouncementListener;
+import me.glaremasters.multieconomy.events.BalanceGUIListener;
 import me.glaremasters.multieconomy.events.JoinEvent;
 import me.glaremasters.multieconomy.metrics.Metrics;
 import me.glaremasters.multieconomy.updater.SpigotUpdater;
@@ -60,6 +61,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("meversion").setExecutor(new CMDVersion());
 
         getServer().getPluginManager().registerEvents(new AnnouncementListener(this), this);
+        getServer().getPluginManager().registerEvents(new BalanceGUIListener(), this);
 
         SpigotUpdater updater = new SpigotUpdater(this, 57245);
 
