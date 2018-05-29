@@ -78,4 +78,8 @@ public class API {
         MultiEconomy.getI().saveData();
     }
 
+    public static String getAmount(String UUID, String econType) {
+        return MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType).toString();
+    }
+
 }
