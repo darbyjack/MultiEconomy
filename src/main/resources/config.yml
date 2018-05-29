@@ -15,6 +15,14 @@
 
 # If you don't follow the example above you have a good chance of breaking the plugin.
 
+# This is used to determine what version of the config you are using.
+# Please do not change this as it may cause issues with your config.
+version: 1
+
+# This will automatically move your current config to "config-old.yml" and replace with a new, updated, "config.yml".
+# If you ever get tired of your config being moved, just change this to "false".
+auto-update-config: true
+
 economy-types:
 - "gems"
 - "tokens"

@@ -43,6 +43,7 @@ public final class MultiEconomy extends JavaPlugin {
     @Override
     public void onEnable() {
         i = this;
+        updateConfig("version", 1);
         saveDefaultConfig();
         saveData();
 
@@ -119,6 +120,19 @@ public final class MultiEconomy extends JavaPlugin {
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Could not save data file!");
             e.printStackTrace();
+        }
+    }
+
+    public void updateConfig(String path, Integer version) {
+        if (!getConfig().isSet(path) || getConfig().getInt(path) != version) {
+            if (getConfig().getBoolean("auto-update-config")) {
+                File oldConfig = new File(this.getDataFolder(), "config.yml");
+                File newConfig = new File(this.getDataFolder(), "config-old.yml");
+                oldConfig.renameTo(newConfig);
+                getLogger().info("Your config has been auto updated. You can disable this in the config.");
+            } else {
+                getLogger().info("Your config is out of date!");
+            }
         }
     }
 }
