@@ -38,7 +38,7 @@ public class AnnouncementListener implements Listener {
                     ALREADY_INFORMED.add(player.getUniqueId());
                 }
             }
-        }, 70L);
+        }, 100L);
     }
 
 }
