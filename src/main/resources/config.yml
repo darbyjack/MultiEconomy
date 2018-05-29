@@ -31,21 +31,21 @@ gems:
   name: "Gems"
   symbol: "$"
   start_amount: 100
-  item: EMERALD
+  item: "EMERALD"
   slot: 0
 
 tokens:
   name: "Tokens"
   symbol: "€"
   start_amount: 25
-  item: GOLD_NUGGET
+  item: "GOLD_NUGGET"
   slot: 1
 
 crystals:
   name: "Crystals"
   symbol: "฿"
   start_amount: 50
-  item: DIAMOND
+  item: "DIAMOND"
   slot: 2
 
 plugin-prefix: "[&6Multi&eEconomy&f]"
