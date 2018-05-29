@@ -26,3 +26,28 @@ commands:
     description: mehelp
   meversion:
     description: meversion
+
+permissions:
+  me.user:
+    description: All permissions for general users
+    children:
+      me.balance: true
+      me.balances: true
+      me.help: true
+      me.list: true
+      me.pay: true
+  me.admin:
+    description: All permissions of the plugin
+    children:
+      me.balance: true
+      me.balances: true
+      me.help: true
+      me.list: true
+      me.pay: true
+      me.give: true
+      me.reset: true
+      me.set: true
+      me.take: true
+      me.version: true
+    default: op
+
