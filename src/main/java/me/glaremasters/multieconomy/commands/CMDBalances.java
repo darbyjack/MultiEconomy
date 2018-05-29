@@ -50,8 +50,7 @@ public class CMDBalances implements CommandExecutor {
                 return true;
             }
             String UUID = offlinePlayer.getUniqueId().toString();
-            Inventory balances = Bukkit.createInventory(null, c.getInt("balances-gui.size"),
-                    color(c.getString("balances-gui.title").replace("{name}", offlinePlayer.getName())));
+            Inventory balances = Bukkit.createInventory(null, c.getInt("balances-gui.size"), color(c.getString("balances-gui.title").replace("{name}", offlinePlayer.getName())));
 
             for (String type : c.getStringList("economy-types")) {
                 ItemStack item = new ItemStack(Material.getMaterial(c.getString(type + ".item")));

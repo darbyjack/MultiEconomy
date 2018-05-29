@@ -39,7 +39,7 @@ leaderboard-gui:
   title: "Top players for the economy {economy}"
   size: 9
   items:
-    name: "{economy} - {amount}"
+    name: "{name} » {amount}"
 
 
 gems:
