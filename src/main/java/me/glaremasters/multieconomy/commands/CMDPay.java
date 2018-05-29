@@ -56,7 +56,7 @@ public class CMDPay implements CommandExecutor {
             int targetBeforeBalance = Integer.valueOf(multiEconomy.dataFileConfig.get(UUID + "." + econType).toString());
             int targetEndBalance = targetBeforeBalance + amount;
 
-            CustomPayEvent event = new CustomPayEvent(player, offlinePlayer, amount);
+            CustomPayEvent event = new CustomPayEvent(player, offlinePlayer, econType, amount);
             Bukkit.getServer().getPluginManager().callEvent(event);
 
             if (!event.isCancelled()) {
