@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkArgs;
 import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
@@ -33,10 +34,7 @@ public class CMDPay implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!checkPerms(player, "me.pay")) return true;
-            if (args.length != 3) {
-                player.sendMessage(color(c.getString("messages.commands.mepay.invalid-args")));
-                return true;
-            }
+            if (!checkArgs(sender, args, 3, "mepay")) return true;
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
             if (!checkPlayerExist(sender, offlinePlayer)) return true;

@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkArgs;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
 import static me.glaremasters.multieconomy.util.ColorUtil.color;
@@ -26,10 +27,7 @@ public class CMDBalances implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length != 1) {
-            sender.sendMessage(color(c.getString("messages.commands.mebalances.invalid-args")));
-            return true;
-        }
+        if (!checkArgs(sender, args, 1, "mebalances")) return true;
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!checkPerms(player, "me.balances")) return true;

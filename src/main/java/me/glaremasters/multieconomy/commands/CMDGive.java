@@ -1,5 +1,6 @@
 package me.glaremasters.multieconomy.commands;
 
+import static me.glaremasters.multieconomy.api.API.checkArgs;
 import static me.glaremasters.multieconomy.api.API.checkEcoType;
 import static me.glaremasters.multieconomy.api.API.checkPerms;
 import static me.glaremasters.multieconomy.api.API.checkPlayerExist;
@@ -30,10 +31,7 @@ public class CMDGive implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length != 3) {
-            sender.sendMessage(color(c.getString("messages.commands.megive.invalid-args")));
-            return true;
-        }
+        if (!checkArgs(sender, args, 3, "megive")) return true;
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!checkPerms(player, "me.give")) return true;

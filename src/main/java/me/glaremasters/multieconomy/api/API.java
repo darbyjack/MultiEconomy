@@ -88,4 +88,20 @@ public class API {
         return MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType).toString();
     }
 
+    /**
+     * Check amount of args in command
+     * @param sender the player who sent the command
+     * @param args the args to check
+     * @param amount the amount of args to check
+     * @param cmd the name of the command
+     * @return if they user has enough args
+     */
+    public static boolean checkArgs(CommandSender sender, String[] args, int amount, String cmd) {
+        if (args.length != amount) {
+            sender.sendMessage(color(c.getString("messages.commands." + cmd + ".invalid-args")));
+            return false;
+        }
+        return true;
+    }
+
 }
