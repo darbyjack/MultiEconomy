@@ -78,6 +78,12 @@ public class API {
         MultiEconomy.getI().saveData();
     }
 
+    /**
+     * Get the amount a user has
+     * @param UUID the uuid of a player
+     * @param econType the type of economy
+     * @return the amount of the economy specified the user has
+     */
     public static String getAmount(String UUID, String econType) {
         return MultiEconomy.getI().dataFileConfig.get(UUID + "." + econType).toString();
     }
