@@ -27,6 +27,13 @@ balances-gui:
   items:
     name: "{economy} - {amount}"
 
+leaderboard-gui:
+  title: "Top players for the economy {economy}"
+  size: 9
+  items:
+    name: "{economy} - {amount}"
+
+
 gems:
   name: "Gems"
   symbol: "$"
@@ -60,6 +67,7 @@ messages:
   - "&6M&eE &8» &7Usage: /metake <player> <economy> <amount>"
   - "&6M&eE &8» &7Usage: /melist"
   - "&6M&eE &8» &7Usage: /mepay <player> <economy> <amount>"
+  - "&6M&eE &8» &7Usage: /metop <economy>"
   commands:
     mebalance:
       invalid-args: "&6M&eE &8» &7Usage: /mebalance <player> <economy>"
@@ -85,6 +93,8 @@ messages:
     mepay:
       invalid-args: "&6M&eE &8» &7Usage: /mepay <player> <economy> <amount>"
       result: "&6M&eE &8» &eYou have sent &f{amount} of &e{economy} &f to {user}"
+    metop:
+      invalid-args: "&6M&eE &8» &7Usage: /metop <economy>"
   error:
     no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
     eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"

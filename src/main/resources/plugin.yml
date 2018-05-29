@@ -26,6 +26,8 @@ commands:
     description: mehelp
   meversion:
     description: meversion
+  metop:
+    description: metop
 
 permissions:
   me.user:
@@ -36,6 +38,7 @@ permissions:
       me.help: true
       me.list: true
       me.pay: true
+      me.top: true
   me.admin:
     description: All permissions of the plugin
     children:
@@ -49,5 +52,6 @@ permissions:
       me.set: true
       me.take: true
       me.version: true
+      me.top: true
     default: op
 

@@ -16,6 +16,7 @@ import me.glaremasters.multieconomy.commands.CMDPay;
 import me.glaremasters.multieconomy.commands.CMDReset;
 import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
+import me.glaremasters.multieconomy.commands.CMDTop;
 import me.glaremasters.multieconomy.commands.CMDVersion;
 import me.glaremasters.multieconomy.events.AnnouncementListener;
 import me.glaremasters.multieconomy.events.BalanceGUIListener;
@@ -59,6 +60,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("mepay").setExecutor(new CMDPay(this));
         getCommand("mehelp").setExecutor(new CMDHelp());
         getCommand("meversion").setExecutor(new CMDVersion());
+        getCommand("metop").setExecutor(new CMDTop(i));
 
         getServer().getPluginManager().registerEvents(new AnnouncementListener(this), this);
         getServer().getPluginManager().registerEvents(new BalanceGUIListener(), this);
