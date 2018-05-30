@@ -103,6 +103,7 @@ messages:
       result: "&6M&eE &8» &eYou have sent &f{amount} of &e{economy} &f to {user}"
     metop:
       invalid-args: "&6M&eE &8» &7Usage: /metop <economy>"
+      wait: "&6M&eE &8» &7Generating data... Please wait 2 seconds!"
   error:
     no-permission: "&6M&eE &8» &cYou do not have permission to run this command!"
     eco-doesnt-exist: "&6M&eE &8» That economy type doesn't exist!"

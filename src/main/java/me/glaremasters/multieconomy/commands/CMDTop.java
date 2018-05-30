@@ -62,7 +62,7 @@ public class CMDTop implements CommandExecutor {
 
             Inventory top = Bukkit.createInventory(null, c.getInt("leaderboard-gui.size"),
                     color(c.getString("leaderboard-gui.title").replace("{economy}", econType)));
-            for (int i = 0; i < dFC.getKeys(false).size(); i++) {
+            for (int i = 0; i < c.getInt("leaderboard-gui.size"); i++) {
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
                 String ID = list.get(i).getKey();
@@ -74,8 +74,12 @@ public class CMDTop implements CommandExecutor {
                 skull.setItemMeta(meta);
                 top.setItem(i, skull);
             }
-            player.openInventory(top);
-            UUIDS.add(player.getUniqueId());
+            player.sendMessage(color(c.getString("messages.commands.metop.wait")));
+            Bukkit.getScheduler().runTaskLaterAsynchronously(multiEconomy, () -> {
+                player.openInventory(top);
+                UUIDS.add(player.getUniqueId());
+            }, (20 * 2));
+
 
 
         }
