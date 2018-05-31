@@ -75,7 +75,6 @@ public class API {
      */
     public static void setAmount(String UUID, String econType, int amount) {
         MultiEconomy.getI().dataFileConfig.set(UUID + "." + econType, amount);
-        MultiEconomy.getI().saveData();
     }
 
     /**
