@@ -1,12 +1,13 @@
 package me.glaremasters.multieconomy;
 
 import static me.glaremasters.multieconomy.util.AnnouncementUtil.unescape_perl_string;
+import co.aikar.taskchain.BukkitTaskChainFactory;
+import co.aikar.taskchain.TaskChain;
+import co.aikar.taskchain.TaskChainFactory;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Level;
 import me.glaremasters.multieconomy.commands.CMDBalance;
 import me.glaremasters.multieconomy.commands.CMDBalances;
 import me.glaremasters.multieconomy.commands.CMDGive;
@@ -18,6 +19,9 @@ import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
 import me.glaremasters.multieconomy.commands.CMDTop;
 import me.glaremasters.multieconomy.commands.CMDVersion;
+import me.glaremasters.multieconomy.database.DatabaseProvider;
+import me.glaremasters.multieconomy.database.databases.mysql.MySQL;
+import me.glaremasters.multieconomy.database.databases.yml.YML;
 import me.glaremasters.multieconomy.events.AnnouncementListener;
 import me.glaremasters.multieconomy.events.BalanceGUIListener;
 import me.glaremasters.multieconomy.events.JoinEvent;
@@ -36,16 +40,35 @@ public final class MultiEconomy extends JavaPlugin {
         return i;
     }
 
-    public File dataFile = new File(this.getDataFolder(), "data.yml");
+    public File dataFile;
+    public YamlConfiguration dataFileConfig;
 
-    public YamlConfiguration dataFileConfig = YamlConfiguration.loadConfiguration(this.dataFile);
+
+    private DatabaseProvider database;
+
+    private static TaskChainFactory taskChainFactory;
+
+    public static <T> TaskChain<T> newChain() {
+        return taskChainFactory.newChain();
+    }
 
     @Override
     public void onEnable() {
         i = this;
         updateConfig("version", 1);
         saveDefaultConfig();
-        saveData();
+
+
+        taskChainFactory = BukkitTaskChainFactory.create(this);
+
+        setDatabaseType();
+
+        this.dataFile = new File(getDataFolder(), "storage.yml");
+        this.dataFileConfig = YamlConfiguration.loadConfiguration(dataFile);
+
+        if (!dataFile.exists()) {
+            this.saveResource("storage.yml", false);
+        }
 
         Metrics metrics = new Metrics(this);
 
@@ -114,16 +137,7 @@ public final class MultiEconomy extends JavaPlugin {
         return announcement;
     }
 
-    public void saveData() {
-        try {
-            dataFileConfig.save(dataFile);
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Could not save data file!");
-            e.printStackTrace();
-        }
-    }
-
-    public void updateConfig(String path, Integer version) {
+    private void updateConfig(String path, Integer version) {
         if (!getConfig().isSet(path) || getConfig().getInt(path) != version) {
             if (getConfig().getBoolean("auto-update-config")) {
                 File oldConfig = new File(this.getDataFolder(), "config.yml");
@@ -135,4 +149,24 @@ public final class MultiEconomy extends JavaPlugin {
             }
         }
     }
+
+    private void setDatabaseType() {
+        switch(getConfig().getString("database.type").toLowerCase()) {
+            case "mysql":
+                database = new MySQL();
+                break;
+            case "yml":
+                database = new YML();
+                break;
+            default:
+                database = new YML();
+                break;
+        }
+        database.initialize();
+    }
+
+    public DatabaseProvider getDatabaseProvider() {
+        return database;
+    }
+
 }

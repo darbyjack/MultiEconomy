@@ -1,8 +1,6 @@
 package me.glaremasters.multieconomy.events;
 
-import static me.glaremasters.multieconomy.api.API.setAmount;
 import me.glaremasters.multieconomy.MultiEconomy;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -20,6 +18,8 @@ public class JoinEvent implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        i.getDatabaseProvider().addUser(event.getPlayer());
+        /*
         FileConfiguration dC = i.dataFileConfig;
         FileConfiguration c= i.getConfig();
         String UUID = event.getPlayer().getUniqueId().toString();
@@ -28,7 +28,7 @@ public class JoinEvent implements Listener {
                 setAmount(UUID, type, c.getInt(type + ".start_amount"));
             }
         }
-        i.saveData();
+        */
     }
 
 }
