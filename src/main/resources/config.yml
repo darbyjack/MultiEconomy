@@ -32,6 +32,7 @@ database:
 #  username: "root"
 #  password: "password"
 #  database: "multieconomy"
+#  prefix: "me_"
 #  pool-size: 10
 
 

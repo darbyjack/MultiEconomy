@@ -42,10 +42,13 @@ public class MySQL implements DatabaseProvider {
 
         hikari.validate();
 
-        MultiEconomy.newChain().async(() -> execute(Query.CREATE_TABLE)).sync(() -> System.out
-                .println("Tables created")).execute((exception, task) -> {
-            if (exception != null)
-                exception.printStackTrace();
+        MultiEconomy.newChain()
+                .async(() -> execute(Query.CREATE_TABLE_PLAYERS))
+                .async(() -> execute(Query.CREATE_TABLE_BALANCE))
+                .async(() -> execute(Query.CREATE_TABLE_ECONOMY))
+                .sync(() -> System.out.println("Tables created"))
+                .execute((exception, task) -> {
+            if (exception != null) exception.printStackTrace();
         });
 
 
@@ -53,9 +56,13 @@ public class MySQL implements DatabaseProvider {
 
     @Override
     public void addUser(Player player) {
-        MultiEconomy.newChain().async(() -> execute(Query.ADD_USER, player.getUniqueId().toString())).execute((exception, task) -> {
-            if (exception != null) exception.printStackTrace();
-        });
+        MultiEconomy.newChain()
+                .async(() -> execute(Query.ADD_USER, player.getUniqueId().toString()))
+                .execute((exception, task) -> {
+                    if (exception != null) {
+                        exception.printStackTrace();
+                    }
+                });
     }
 
     private void execute(String query, Object... parameters) {
