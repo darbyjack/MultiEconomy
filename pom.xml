@@ -6,7 +6,7 @@
 
   <groupId>me.glaremasters</groupId>
   <artifactId>MultiEconomy</artifactId>
-  <version>1.0.5-RELEASE</version>
+  <version>1.0.6-BETA</version>
   <packaging>jar</packaging>
 
   <name>MultiEconomy</name>
@@ -66,6 +66,10 @@
       <id>rayzr-repo</id>
       <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
     </repository>
+    <repository>
+      <id>Aikari</id>
+      <url>http://ci.emc.gs/nexus/content/groups/aikar/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -84,6 +88,21 @@
       <groupId>me.rayzr522</groupId>
       <artifactId>jsonmessage</artifactId>
       <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>co.aikar</groupId>
+      <artifactId>taskchain-core</artifactId>
+      <version>3.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>co.aikar</groupId>
+      <artifactId>taskchain-bukkit</artifactId>
+      <version>3.6.0</version>
     </dependency>
   </dependencies>
 </project>
