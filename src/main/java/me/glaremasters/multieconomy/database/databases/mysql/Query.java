@@ -9,19 +9,19 @@ class Query {
 
     static final String prefix = MultiEconomy.getI().getConfig().getString("database.prefix");
 
-    static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXIST `" + prefix + "Players` (\n"
+    static final String CREATE_TABLE_PLAYERS = "CREATE TABLE IF NOT EXISTS `" + prefix + "Players` (\n"
             + "    `id` int  NOT NULL AUTO_INCREMENT ,\n"
             + "    `UUID` varchar(36)  NOT NULL ,\n"
             + "    PRIMARY KEY (`id`)\n"
             + ");\n";
 
-    static final String CREATE_TABLE_ECONOMY = "CREATE TABLE IF NOT EXIST `" + prefix + "Economy` (\n"
+    static final String CREATE_TABLE_ECONOMY = "CREATE TABLE IF NOT EXISTS `" + prefix + "Economy` (\n"
             + "    `id` int  NOT NULL AUTO_INCREMENT ,\n"
             + "    `eco_name` varchar(32)  NOT NULL ,\n"
             + "    PRIMARY KEY (`id`)\n"
             + ");";
 
-    static final String CREATE_TABLE_BALANCE = "CREATE TABLE IF NOT EXIST `" + prefix + "Balance` (\n"
+    static final String CREATE_TABLE_BALANCE = "CREATE TABLE IF NOT EXISTS `" + prefix + "Balance` (\n"
             + "    `id` int  NOT NULL AUTO_INCREMENT,\n"
             + "    `balance` double NOT NULL ,\n"
             + "    `player_id` int  NOT NULL ,\n"
