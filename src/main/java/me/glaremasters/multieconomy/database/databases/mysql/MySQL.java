@@ -56,14 +56,11 @@ public class MySQL implements DatabaseProvider {
             for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
                 MultiEconomy.newChain()
                         .async(() -> execute(Query.ADD_ECO_TYPES, type))
-                        .sync(() -> System.out.println("Inserted economy types"))
                         .execute((exception, task) -> {
                             if (exception != null) exception.printStackTrace();
                         });
             }
         }, 20);
-
-
     }
 
     @Override
