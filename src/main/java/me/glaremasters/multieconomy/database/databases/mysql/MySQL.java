@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.sql.rowset.CachedRowSet;
 import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -50,6 +51,17 @@ public class MySQL implements DatabaseProvider {
                 .execute((exception, task) -> {
             if (exception != null) exception.printStackTrace();
         });
+
+        Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(), () -> {
+            for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
+                MultiEconomy.newChain()
+                        .async(() -> execute(Query.ADD_ECO_TYPES, type))
+                        .sync(() -> System.out.println("Inserted economy types"))
+                        .execute((exception, task) -> {
+                            if (exception != null) exception.printStackTrace();
+                        });
+            }
+        }, 20);
 
 
     }

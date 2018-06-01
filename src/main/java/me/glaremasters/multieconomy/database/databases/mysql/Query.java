@@ -31,6 +31,6 @@ class Query {
 
     static final String ADD_USER = "INSERT INTO economy (uuid) VALUES(?)";
 
-    static final String CHECK_COLUMN = "ALTER TABLE economy ADD ? INT";
+    static final String ADD_ECO_TYPES = "INSERT INTO `" + prefix + "economy` (eco_name) VALUES(?)";
 
 }
