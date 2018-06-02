@@ -2,108 +2,105 @@ package me.glaremasters.multieconomy.database.databases.mysql;
 
 import com.sun.rowset.CachedRowSetImpl;
 import com.zaxxer.hikari.HikariDataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.HashMap;
 import javax.sql.rowset.CachedRowSet;
+import javax.xml.transform.Result;
+
 import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by GlareMasters on 5/31/2018.
  */
 public class MySQL implements DatabaseProvider {
 
-    private HikariDataSource hikari;
-
-    private HashMap<String, String> player_id = new HashMap<>();
-    private HashMap<String, String> eco_id = new HashMap<>();
+    private Connection connection;
+    private String host;
+    private int port;
+    private String database;
+    private String username;
+    private String password;
 
     @Override
     public void initialize() {
+
         ConfigurationSection databaseSection = MultiEconomy.getI().getConfig()
                 .getConfigurationSection("database");
         if (databaseSection == null) {
             throw new IllegalStateException("MySQL not configured correctly. Cannot continue.");
         }
-        hikari = new HikariDataSource();
-        hikari.setMaximumPoolSize(databaseSection.getInt("pool-size"));
 
-        hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hikari.addDataSourceProperty("serverName", databaseSection.getString("host"));
-        hikari.addDataSourceProperty("port", databaseSection.getInt("port"));
-        hikari.addDataSourceProperty("databaseName", databaseSection.getString("database"));
+        this.host = databaseSection.getString("host");
+        this.port = databaseSection.getInt("port");
+        this.database = databaseSection.getString("database");
 
-        hikari.addDataSourceProperty("user", databaseSection.getString("username"));
-        hikari.addDataSourceProperty("password", databaseSection.getString("password"));
+        this.username = databaseSection.getString("username");
+        this.password = databaseSection.getString("password");
 
-        hikari.addDataSourceProperty("characterEncoding", "utf8");
-        hikari.addDataSourceProperty("useUnicode", "true");
+        try {
+            synchronized (this) {
+                if (connection != null && !connection.isClosed()) {
+                    return;
+                }
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection(
+                        "jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database, this.username,
+                        this.password);
+                BukkitRunnable runnable = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        executeUpdate(Query.CREATE_TABLE_PLAYERS);
+                        executeUpdate(Query.CREATE_TABLE_BALANCE);
+                        executeUpdate(Query.CREATE_TABLE_ECONOMY);
 
-        hikari.validate();
+                        for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
+                            executeUpdate(Query.ADD_ECO_TYPES, type);
+                        }
+                    }
+                };
+                runnable.runTaskAsynchronously(MultiEconomy.getI());
 
-        MultiEconomy.newChain()
-                .async(() -> execute(Query.CREATE_TABLE_PLAYERS))
-                .async(() -> execute(Query.CREATE_TABLE_BALANCE))
-                .async(() -> execute(Query.CREATE_TABLE_ECONOMY))
-                .sync(() -> System.out.println("Tables created"))
-                .execute((exception, task) -> {
-            if (exception != null) exception.printStackTrace();
-        });
-
-        Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(), () -> {
-            for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
-                MultiEconomy.newChain()
-                        .async(() -> execute(Query.ADD_ECO_TYPES, type))
-                        .execute((exception, task) -> {
-                            if (exception != null) exception.printStackTrace();
-                        });
             }
-        }, 20);
+        } catch (Exception e) {
+            // connection error
+        }
+
     }
 
     @Override
     public void addUser(Player player) {
-        MultiEconomy.newChain()
-                .async(() -> execute(Query.ADD_USER, player.getUniqueId().toString()))
-                .execute((exception, task) -> {
-                    if (exception != null) {
-                        exception.printStackTrace();
-                    }
-                });
-
-        Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(),
-                () -> MultiEconomy.newChain().async(() -> {
-                    try (ResultSet res = executeQuery(Query.GET_USER, player.getUniqueId().toString())) {
-                        assert res != null;
-                        if (res.next()) {
-                            player_id.put(player.getUniqueId().toString(), res.getString(1));
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }).execute((ex, task) -> {
-                    if (ex != null) {
-                        ex.printStackTrace();
-                    }
-                }), 20);
-        Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(), new Runnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
+                executeUpdate(Query.ADD_USER, player.getUniqueId().toString());
+                player.sendMessage(""+getUserId(player.getUniqueId().toString()));
             }
-        }, 20);
-
+        };
+        runnable.runTaskAsynchronously(MultiEconomy.getI());
     }
 
-    private void execute(String query, Object... parameters) {
+    //not sure if you want public or private
+    public int getUserId(String UUID) {
+        try {
+            ResultSet rs = getResultSet(Query.GET_USER, UUID);
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            //handle
+        }
+        return 0;
+    }
 
-        try (Connection connection = hikari
-                .getConnection(); PreparedStatement statement = connection
+    private void executeUpdate(String query, Object... parameters) {
+        try (PreparedStatement statement = connection
                 .prepareStatement(query)) {
 
             if (parameters != null) {
@@ -118,9 +115,8 @@ public class MySQL implements DatabaseProvider {
         }
     }
 
-    private ResultSet executeQuery(String query, Object... parameters) {
-        try (Connection connection = hikari
-                .getConnection(); PreparedStatement statement = connection
+    private ResultSet getResultSet(String query, Object... parameters) {
+        try (PreparedStatement statement = connection
                 .prepareStatement(query)) {
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
