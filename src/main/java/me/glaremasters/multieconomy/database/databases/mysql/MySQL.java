@@ -1,17 +1,14 @@
 package me.glaremasters.multieconomy.database.databases.mysql;
 
 import com.sun.rowset.CachedRowSetImpl;
-import com.zaxxer.hikari.HikariDataSource;
-
-import java.sql.*;
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.sql.rowset.CachedRowSet;
-import javax.xml.transform.Result;
-
 import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

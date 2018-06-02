@@ -1,9 +1,6 @@
 package me.glaremasters.multieconomy;
 
 import static me.glaremasters.multieconomy.util.AnnouncementUtil.unescape_perl_string;
-import co.aikar.taskchain.BukkitTaskChainFactory;
-import co.aikar.taskchain.TaskChain;
-import co.aikar.taskchain.TaskChainFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -46,11 +43,7 @@ public final class MultiEconomy extends JavaPlugin {
 
     private DatabaseProvider database;
 
-    private static TaskChainFactory taskChainFactory;
 
-    public static <T> TaskChain<T> newChain() {
-        return taskChainFactory.newChain();
-    }
 
     @Override
     public void onEnable() {
@@ -59,7 +52,6 @@ public final class MultiEconomy extends JavaPlugin {
         saveDefaultConfig();
 
 
-        taskChainFactory = BukkitTaskChainFactory.create(this);
 
         setDatabaseType();
 
