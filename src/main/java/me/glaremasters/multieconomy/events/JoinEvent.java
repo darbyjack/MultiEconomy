@@ -19,16 +19,6 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         i.getDatabaseProvider().addUser(event.getPlayer());
-        /*
-        FileConfiguration dC = i.dataFileConfig;
-        FileConfiguration c= i.getConfig();
-        String UUID = event.getPlayer().getUniqueId().toString();
-        for (String type : c.getStringList("economy-types")) {
-            if (dC.get(UUID + "." + type) == null) {
-                setAmount(UUID, type, c.getInt(type + ".start_amount"));
-            }
-        }
-        */
     }
 
 }

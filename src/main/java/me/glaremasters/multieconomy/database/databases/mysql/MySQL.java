@@ -76,6 +76,7 @@ public class MySQL implements DatabaseProvider {
                         exception.printStackTrace();
                     }
                 });
+
         Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(),
                 () -> MultiEconomy.newChain().async(() -> {
                     try (ResultSet res = executeQuery(Query.GET_USER, player.getUniqueId().toString())) {
