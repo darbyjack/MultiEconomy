@@ -34,6 +34,12 @@ class Query {
 
     static final String ADD_USER = "INSERT IGNORE INTO " + prefix + "players (UUID) VALUES(?)";
 
+    static final String GET_USER = "SELECT id FROM " + prefix + "players WHERE UUID=?";
+
+    static final String ADD_INITIAL_AMOUNTS = "INSERT INTO `" + prefix + "balance (balance, player_id, eco_id) VALUES(?, ?, ?)";
+
+    static final String GET_ECO_ID = "SELECT id FROM " + prefix + "economy WHERE eco_name=?";
+
     static final String ADD_ECO_TYPES = "INSERT IGNORE INTO `" + prefix + "economy` (eco_name) VALUES(?)";
 
 }

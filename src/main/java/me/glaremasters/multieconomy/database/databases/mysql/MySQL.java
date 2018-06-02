@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import javax.sql.rowset.CachedRowSet;
 import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
@@ -19,6 +20,9 @@ import org.bukkit.entity.Player;
 public class MySQL implements DatabaseProvider {
 
     private HikariDataSource hikari;
+
+    private HashMap<String, String> player_id = new HashMap<>();
+    private HashMap<String, String> eco_id = new HashMap<>();
 
     @Override
     public void initialize() {
@@ -72,6 +76,27 @@ public class MySQL implements DatabaseProvider {
                         exception.printStackTrace();
                     }
                 });
+        Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(),
+                () -> MultiEconomy.newChain().async(() -> {
+                    try (ResultSet res = executeQuery(Query.GET_USER, player.getUniqueId().toString())) {
+                        assert res != null;
+                        if (res.next()) {
+                            player_id.put(player.getUniqueId().toString(), res.getString(1));
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }).execute((ex, task) -> {
+                    if (ex != null) {
+                        ex.printStackTrace();
+                    }
+                }), 20);
+        Bukkit.getServer().getScheduler().runTaskLater(MultiEconomy.getI(), new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 20);
+
     }
 
     private void execute(String query, Object... parameters) {
