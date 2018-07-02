@@ -1,104 +1,125 @@
 package me.glaremasters.multieconomy.database.databases.mysql;
 
 import com.sun.rowset.CachedRowSetImpl;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.sql.rowset.CachedRowSet;
+import com.zaxxer.hikari.HikariDataSource;
 import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.sql.rowset.CachedRowSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * Created by GlareMasters on 5/31/2018.
  */
 public class MySQL implements DatabaseProvider {
 
-    private Connection connection;
-    private String host;
-    private int port;
-    private String database;
-    private String username;
-    private String password;
+    private HikariDataSource hikari;
 
     @Override
     public void initialize() {
-
         ConfigurationSection databaseSection = MultiEconomy.getI().getConfig()
                 .getConfigurationSection("database");
         if (databaseSection == null) {
             throw new IllegalStateException("MySQL not configured correctly. Cannot continue.");
         }
 
-        this.host = databaseSection.getString("host");
-        this.port = databaseSection.getInt("port");
-        this.database = databaseSection.getString("database");
+        hikari = new HikariDataSource();
+        hikari.setMaximumPoolSize(databaseSection.getInt("pool-size"));
 
-        this.username = databaseSection.getString("username");
-        this.password = databaseSection.getString("password");
+        hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 
-        try {
-            synchronized (this) {
-                if (connection != null && !connection.isClosed()) {
-                    return;
+        hikari.addDataSourceProperty("serverName", databaseSection.getString("host"));
+        hikari.addDataSourceProperty("port", databaseSection.getInt("port"));
+        hikari.addDataSourceProperty("databaseName", databaseSection.getString("database"));
+
+        hikari.addDataSourceProperty("user", databaseSection.getString("username"));
+        hikari.addDataSourceProperty("password", databaseSection.getString("password"));
+
+        hikari.addDataSourceProperty("characterEncoding", "utf8");
+        hikari.addDataSourceProperty("useUnicode", "true");
+
+        hikari.validate();
+
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                executeUpdate(Query.CREATE_TABLE_PLAYERS);
+                executeUpdate(Query.CREATE_TABLE_BALANCE);
+                executeUpdate(Query.CREATE_TABLE_ECONOMY);
+
+                // adds the different eco's to the database
+                for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
+                    executeUpdate(Query.ADD_ECO_TYPES, type);
                 }
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection(
-                        "jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database, this.username,
-                        this.password);
-                BukkitRunnable runnable = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        executeUpdate(Query.CREATE_TABLE_PLAYERS);
-                        executeUpdate(Query.CREATE_TABLE_BALANCE);
-                        executeUpdate(Query.CREATE_TABLE_ECONOMY);
-
-                        for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
-                            executeUpdate(Query.ADD_ECO_TYPES, type);
-                        }
-                    }
-                };
-                runnable.runTaskAsynchronously(MultiEconomy.getI());
-
             }
-        } catch (Exception e) {
-            // connection error
-        }
-
+        };
+        runnable.runTaskAsynchronously(MultiEconomy.getI());
     }
 
+    /**
+     * Runs from the user join event to add the user if doesn't exist
+     * @param player gets the player
+     */
     @Override
     public void addUser(Player player) {
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 executeUpdate(Query.ADD_USER, player.getUniqueId().toString());
-                player.sendMessage(""+getUserId(player.getUniqueId().toString()));
+                int userId = getUserId(player.getUniqueId().toString());
+                if (userId == 0) return;
+
+                // does not work yet, trouble with duplicated amounts, can't make any of the values unique, so it needs more checks
+                for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
+                    executeUpdate(Query.ADD_INITIAL_AMOUNTS, Integer.parseInt(MultiEconomy.getI().getConfig().getString(type + ".start_amount")), userId, getEcoId(type));
+                }
             }
         };
         runnable.runTaskAsynchronously(MultiEconomy.getI());
     }
 
     //not sure if you want public or private
-    public int getUserId(String UUID) {
+    private int getUserId(String UUID) {
         try {
             ResultSet rs = getResultSet(Query.GET_USER, UUID);
             while (rs.next()) {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
-            //handle
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private int getEcoId(String ecoName) {
+        try {
+            ResultSet rs = getResultSet(Query.GET_ECO_ID, ecoName);
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
     }
 
     private void executeUpdate(String query, Object... parameters) {
-        try (PreparedStatement statement = connection
-                .prepareStatement(query)) {
+        Connection connection = null;
+
+        PreparedStatement statement = null;
+
+        try {
+            connection = hikari.getConnection();
+
+
+            statement = connection
+                    .prepareStatement(query);
 
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
@@ -107,14 +128,39 @@ public class MySQL implements DatabaseProvider {
             }
 
             statement.execute();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     private ResultSet getResultSet(String query, Object... parameters) {
-        try (PreparedStatement statement = connection
-                .prepareStatement(query)) {
+        Connection connection = null;
+
+        PreparedStatement statement = null;
+
+        try {
+            connection = hikari.getConnection();
+
+            statement = connection
+                    .prepareStatement(query);
+
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
                     statement.setObject(i + 1, parameters[i]);
@@ -128,14 +174,31 @@ public class MySQL implements DatabaseProvider {
             resultSet.close();
 
             return resultCached;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return null;
     }
 
-    @SuppressWarnings("Duplicates")
+    @SuppressWarnings ("Duplicates")
     private void close(Connection connection, PreparedStatement statement) {
         if (connection != null) {
             try {
