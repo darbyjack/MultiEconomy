@@ -85,5 +85,14 @@
       <artifactId>jsonmessage</artifactId>
       <version>1.0.0</version>
     </dependency>
+
+    <!-- I added this here, remove if needed -->
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <!-- ...... -->
+
   </dependencies>
 </project>
