@@ -28,7 +28,8 @@ class Query {
             + "    `balance` double NOT NULL ,\n"
             + "    `player_id` int  NOT NULL ,\n"
             + "    `eco_id` int  NOT NULL ,\n"
-            + "    PRIMARY KEY (`id`)\n"
+            + "    PRIMARY KEY (`id`),\n"
+            + "    UNIQUE(`player_id`)\n"
             + ");";
 
 
@@ -36,7 +37,7 @@ class Query {
 
     static final String GET_USER = "SELECT id FROM " + prefix + "players WHERE UUID=?";
 
-    static final String ADD_INITIAL_AMOUNTS = "INSERT INTO `" + prefix + "balance (balance, player_id, eco_id) VALUES(?, ?, ?)";
+    static final String ADD_INITIAL_AMOUNTS = "INSERT IGNORE INTO `" + prefix + "balance` (`balance`, `player_id`, `eco_id`) VALUES(?, ?, ?)";
 
     static final String GET_ECO_ID = "SELECT id FROM " + prefix + "economy WHERE eco_name=?";
 
