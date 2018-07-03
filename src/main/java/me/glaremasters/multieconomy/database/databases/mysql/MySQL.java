@@ -6,7 +6,6 @@ import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
@@ -46,10 +45,7 @@ public class MySQL implements DatabaseProvider {
 
         hikari.validate();
 
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                executeUpdate(Query.CREATE_TABLE_PLAYERS);
+        new Thread(() -> {
                 executeUpdate(Query.CREATE_TABLE_BALANCE);
                 executeUpdate(Query.CREATE_TABLE_ECONOMY);
 
@@ -57,44 +53,18 @@ public class MySQL implements DatabaseProvider {
                 for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
                     executeUpdate(Query.ADD_ECO_TYPES, type);
                 }
-            }
-        };
-        runnable.runTaskAsynchronously(MultiEconomy.getI());
+        }).start();
     }
 
-    /**
-     * Runs from the user join event to add the user if doesn't exist
-     * @param player gets the player
-     */
     @Override
     public void addUser(Player player) {
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                executeUpdate(Query.ADD_USER, player.getUniqueId().toString());
-                int userId = getUserId(player.getUniqueId().toString());
-                if (userId == 0) return;
-
-                // does not work yet, trouble with duplicated amounts, can't make any of the values unique, so it needs more checks
-                for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
-                    executeUpdate(Query.ADD_INITIAL_AMOUNTS, Integer.parseInt(MultiEconomy.getI().getConfig().getString(type + ".start_amount")), userId, getEcoId(type));
-                }
+        new Thread(() -> {
+            for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
+                int ecoId = getEcoId(type);
+                if (hasBalance(player.getUniqueId().toString(), ecoId))
+                    executeUpdate(Query.ADD_INITIAL_AMOUNTS, Integer.parseInt(MultiEconomy.getI().getConfig().getString(type + ".start_amount")), player.getUniqueId().toString(), getEcoId(type));
             }
-        };
-        runnable.runTaskAsynchronously(MultiEconomy.getI());
-    }
-
-    //not sure if you want public or private
-    private int getUserId(String UUID) {
-        try {
-            ResultSet rs = getResultSet(Query.GET_USER, UUID);
-            while (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        }).start();
     }
 
     private int getEcoId(String ecoName) {
@@ -107,6 +77,18 @@ public class MySQL implements DatabaseProvider {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    private boolean hasBalance(String uuid, int ecoId) {
+        try {
+            ResultSet rs = getResultSet(Query.HAS_BALANCE, uuid, ecoId);
+            while (rs.next()) {
+                if (rs.getInt("count") == 0) return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void executeUpdate(String query, Object... parameters) {
@@ -132,21 +114,7 @@ public class MySQL implements DatabaseProvider {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            close(connection, statement);
         }
     }
 
@@ -178,21 +146,7 @@ public class MySQL implements DatabaseProvider {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            close(connection, statement);
         }
 
         return null;
