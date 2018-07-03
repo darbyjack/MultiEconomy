@@ -28,7 +28,13 @@ class Query {
 
     static final String GET_ECO_ID = "SELECT id FROM " + prefix + "economy WHERE eco_name=?";
 
+    static final String GET_ECO_NAME = "SELECT `eco_name` FROM `" + prefix + "economy` WHERE `id` = ?";
+
     static final String ADD_ECO_TYPES = "INSERT IGNORE INTO `" + prefix + "economy` (eco_name) VALUES(?)";
 
     static final String HAS_BALANCE = "SELECT COUNT(`id`) count FROM `" + prefix + "balance` WHERE `uuid` = ? AND `eco_id` = ?";
+
+    static final String GET_BALANCE = "SELECT `balance` FROM `" + prefix + "balance` WHERE `uuid` = ? AND `eco_id` = ?";
+
+    static final String SET_BALANCE = "UPDATE `" + prefix + "balance` SET `balance` = ? WHERE `uuid` = ? AND `eco_id` = ?";
 }

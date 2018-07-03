@@ -4,6 +4,8 @@ import com.sun.rowset.CachedRowSetImpl;
 import com.zaxxer.hikari.HikariDataSource;
 import me.glaremasters.multieconomy.MultiEconomy;
 import me.glaremasters.multieconomy.database.DatabaseProvider;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -12,6 +14,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by GlareMasters on 5/31/2018.
@@ -46,13 +50,13 @@ public class MySQL implements DatabaseProvider {
         hikari.validate();
 
         new Thread(() -> {
-                executeUpdate(Query.CREATE_TABLE_BALANCE);
-                executeUpdate(Query.CREATE_TABLE_ECONOMY);
+            executeUpdate(Query.CREATE_TABLE_BALANCE);
+            executeUpdate(Query.CREATE_TABLE_ECONOMY);
 
-                // adds the different eco's to the database
-                for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
-                    executeUpdate(Query.ADD_ECO_TYPES, type);
-                }
+            // adds the different eco's to the database
+            for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
+                executeUpdate(Query.ADD_ECO_TYPES, type);
+            }
         }).start();
     }
 
@@ -61,9 +65,57 @@ public class MySQL implements DatabaseProvider {
         new Thread(() -> {
             for (String type : MultiEconomy.getI().getConfig().getStringList("economy-types")) {
                 int ecoId = getEcoId(type);
-                if (hasBalance(player.getUniqueId().toString(), ecoId))
+                if (!hasBalance(player.getUniqueId().toString(), ecoId))
                     executeUpdate(Query.ADD_INITIAL_AMOUNTS, Integer.parseInt(MultiEconomy.getI().getConfig().getString(type + ".start_amount")), player.getUniqueId().toString(), getEcoId(type));
             }
+        }).start();
+    }
+
+    /**
+     * Gets the balance from the database based on the economy
+     * @param uuid the uuid of the player
+     * @param eco the economy name
+     * @return returns double value with the balance
+     */
+    public double getBalance(String uuid, String eco) {
+        try {
+            ResultSet rs = getResultSet(Query.GET_BALANCE, uuid, getEcoId(eco));
+            while (rs.next()) {
+                return rs.getInt("balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     *  Gets all the balances the player has
+     * @param uuid the uuid of the player
+     * @return A hashmap with the balance and the economy name for that balance
+     */
+    public HashMap<String, Double> getBalances(String uuid) {
+        HashMap<String, Double> balances = new HashMap<String, Double>();
+        try {
+            ResultSet rs = getResultSet(Query.GET_BALANCE, uuid);
+            while (rs.next()) {
+                balances.put(getEcoName(rs.getInt("eco_id")), rs.getDouble("balance"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return balances;
+    }
+
+    /**
+     * Sets the balance for the player
+     * @param uuid the uuid of the player
+     * @param eco the economy name
+     * @param balance the new balance to be set
+     */
+    public void setBalance(String uuid, String eco, double balance) {
+        new Thread(() -> {
+            executeUpdate(Query.SET_BALANCE, balance, uuid, getEcoId(eco));
         }).start();
     }
 
@@ -79,11 +131,23 @@ public class MySQL implements DatabaseProvider {
         return 0;
     }
 
+    private String getEcoName(int ecoId) {
+        try {
+            ResultSet rs = getResultSet(Query.GET_ECO_NAME, ecoId);
+            while (rs.next()) {
+                return rs.getString("eco_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     private boolean hasBalance(String uuid, int ecoId) {
         try {
             ResultSet rs = getResultSet(Query.HAS_BALANCE, uuid, ecoId);
             while (rs.next()) {
-                if (rs.getInt("count") == 0) return true;
+                if (rs.getInt("count") == 1) return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
