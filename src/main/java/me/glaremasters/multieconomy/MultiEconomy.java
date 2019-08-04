@@ -1,12 +1,5 @@
 package me.glaremasters.multieconomy;
 
-import static me.glaremasters.multieconomy.util.AnnouncementUtil.unescape_perl_string;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.logging.Level;
 import me.glaremasters.multieconomy.commands.CMDBalance;
 import me.glaremasters.multieconomy.commands.CMDBalances;
 import me.glaremasters.multieconomy.commands.CMDGive;
@@ -18,15 +11,16 @@ import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
 import me.glaremasters.multieconomy.commands.CMDTop;
 import me.glaremasters.multieconomy.commands.CMDVersion;
-import me.glaremasters.multieconomy.events.AnnouncementListener;
 import me.glaremasters.multieconomy.events.BalanceGUIListener;
 import me.glaremasters.multieconomy.events.JoinEvent;
-import me.glaremasters.multieconomy.metrics.Metrics;
 import me.glaremasters.multieconomy.updater.SpigotUpdater;
-import org.apache.commons.io.IOUtils;
-import org.bukkit.Bukkit;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
 
 public final class MultiEconomy extends JavaPlugin {
 
@@ -49,7 +43,6 @@ public final class MultiEconomy extends JavaPlugin {
 
         Metrics metrics = new Metrics(this);
 
-        Bukkit.getConsoleSender().sendMessage(getAnnouncements());
         getServer().getPluginManager().registerEvents(new JoinEvent(i), this);
         getCommand("mebalance").setExecutor(new CMDBalance(this));
         getCommand("meset").setExecutor(new CMDSet(this));
@@ -63,7 +56,6 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("meversion").setExecutor(new CMDVersion());
         getCommand("metop").setExecutor(new CMDTop(i));
 
-        getServer().getPluginManager().registerEvents(new AnnouncementListener(this), this);
         getServer().getPluginManager().registerEvents(new BalanceGUIListener(), this);
 
         SpigotUpdater updater = new SpigotUpdater(this, 57245);
@@ -89,30 +81,6 @@ public final class MultiEconomy extends JavaPlugin {
 
     }
 
-    /**
-     * Grab the announcement from the API
-     *
-     * @return announcement in string text form
-     */
-    public String getAnnouncements() {
-        String announcement = "";
-        try {
-            URL url = new URL("https://glaremasters.me/api/announcements/multieconomy/?id=" + getDescription()
-                    .getVersion());
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            try (InputStream in = con.getInputStream()) {
-                String encoding = con.getContentEncoding();
-                encoding = encoding == null ? "UTF-8" : encoding;
-                announcement = unescape_perl_string(IOUtils.toString(in, encoding));
-                con.disconnect();
-            }
-        } catch (Exception exception) {
-            announcement = "Could not fetch announcements!";
-        }
-        return announcement;
-    }
 
     public void saveData() {
         try {

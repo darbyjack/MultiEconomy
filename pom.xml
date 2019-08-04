@@ -6,7 +6,7 @@
 
   <groupId>me.glaremasters</groupId>
   <artifactId>MultiEconomy</artifactId>
-  <version>1.0.5-RELEASE</version>
+  <version>1.0.6-RELEASE</version>
   <packaging>jar</packaging>
 
   <name>MultiEconomy</name>
@@ -40,6 +40,12 @@
             </goals>
             <configuration>
               <minimizeJar>true</minimizeJar>
+              <relocations>
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>me.glaremasters.multieconomy.libs.bstats</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -55,16 +61,8 @@
 
   <repositories>
     <repository>
-      <id>spigotmc-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>sonatype</id>
-      <url>https://oss.sonatype.org/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>rayzr-repo</id>
-      <url>https://cdn.rawgit.com/Rayzr522/maven-repo/master/</url>
+      <id>repo</id>
+      <url>https://repo.glaremasters.me/repository/public/</url>
     </repository>
   </repositories>
 
@@ -72,8 +70,14 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.12.2-R0.1-SNAPSHOT</version>
+      <version>1.14.4-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.bstats</groupId>
+      <artifactId>bstats-bukkit</artifactId>
+      <version>1.5</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -84,6 +88,11 @@
       <groupId>me.rayzr522</groupId>
       <artifactId>jsonmessage</artifactId>
       <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
     </dependency>
   </dependencies>
 </project>

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 import me.glaremasters.multieconomy.MultiEconomy;
+import me.glaremasters.multieconomy.util.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -63,7 +64,7 @@ public class CMDTop implements CommandExecutor {
             Inventory top = Bukkit.createInventory(null, c.getInt("leaderboard-gui.size"),
                     color(c.getString("leaderboard-gui.title").replace("{economy}", econType)));
             for (int i = 0; i < list.size(); i++) {
-                ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+                ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
                 String ID = list.get(i).getKey();
                 String name = Bukkit.getServer().getOfflinePlayer(UUID.fromString(ID)).getName();

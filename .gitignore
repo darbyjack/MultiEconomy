@@ -1,0 +1,16 @@
+
+\.idea/
+
+dependency-reduced-pom\.xml
+
+lib/
+
+MultiEconomy\.iml
+
+target/classes/
+
+target/maven-archiver/
+
+target/maven-status/maven-compiler-plugin/compile/default-compile/
+
+target/
