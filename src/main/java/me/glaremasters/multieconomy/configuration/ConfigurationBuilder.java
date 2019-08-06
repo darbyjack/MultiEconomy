@@ -2,6 +2,8 @@ package me.glaremasters.multieconomy.configuration;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
+import me.glaremasters.multieconomy.configuration.sections.EconomyTypeSettings;
+import me.glaremasters.multieconomy.configuration.sections.GUISettings;
 import me.glaremasters.multieconomy.configuration.sections.PluginSettings;
 
 public class ConfigurationBuilder {
@@ -12,7 +14,7 @@ public class ConfigurationBuilder {
 
     public static ConfigurationData buildConfig() {
         return ConfigurationDataBuilder.createConfiguration(
-                PluginSettings.class
+                PluginSettings.class, EconomyTypeSettings.class, GUISettings.class
         );
     }
 
