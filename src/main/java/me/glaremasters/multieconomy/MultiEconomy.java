@@ -3,21 +3,9 @@ package me.glaremasters.multieconomy;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import co.aikar.commands.PaperCommandManager;
-import me.glaremasters.multieconomy.commands.CMDBalance;
-import me.glaremasters.multieconomy.commands.CMDBalances;
-import me.glaremasters.multieconomy.commands.CMDGive;
-import me.glaremasters.multieconomy.commands.CMDHelp;
-import me.glaremasters.multieconomy.commands.CMDList;
-import me.glaremasters.multieconomy.commands.CMDPay;
-import me.glaremasters.multieconomy.commands.CMDReset;
-import me.glaremasters.multieconomy.commands.CMDSet;
-import me.glaremasters.multieconomy.commands.CMDTake;
-import me.glaremasters.multieconomy.commands.CMDTop;
-import me.glaremasters.multieconomy.commands.CMDVersion;
+import me.glaremasters.multieconomy.commands.CommandHelp;
 import me.glaremasters.multieconomy.configuration.ConfigurationBuilder;
 import me.glaremasters.multieconomy.configuration.MultiEconomyMigrationService;
-import me.glaremasters.multieconomy.events.BalanceGUIListener;
-import me.glaremasters.multieconomy.events.JoinEvent;
 import me.glaremasters.multieconomy.updater.SpigotUpdater;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,22 +35,12 @@ public final class MultiEconomy extends JavaPlugin {
         loadConfig();
         saveData();
 
+        commandManager = new PaperCommandManager(this);
+        commandManager.enableUnstableAPI("help");
+
+        commandManager.registerCommand(new CommandHelp());
+
         Metrics metrics = new Metrics(this);
-
-        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
-        getCommand("mebalance").setExecutor(new CMDBalance(this));
-        getCommand("meset").setExecutor(new CMDSet(this));
-        getCommand("mereset").setExecutor(new CMDReset(this));
-        getCommand("megive").setExecutor(new CMDGive(this));
-        getCommand("metake").setExecutor(new CMDTake(this));
-        getCommand("melist").setExecutor(new CMDList());
-        getCommand("mebalances").setExecutor(new CMDBalances(this));
-        getCommand("mepay").setExecutor(new CMDPay(this));
-        getCommand("mehelp").setExecutor(new CMDHelp());
-        getCommand("meversion").setExecutor(new CMDVersion());
-        getCommand("metop").setExecutor(new CMDTop(this));
-
-        getServer().getPluginManager().registerEvents(new BalanceGUIListener(), this);
 
         SpigotUpdater updater = new SpigotUpdater(this, 57245);
 
@@ -94,19 +72,6 @@ public final class MultiEconomy extends JavaPlugin {
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Could not save data file!");
             e.printStackTrace();
-        }
-    }
-
-    public void updateConfig(String path, Integer version) {
-        if (!getConfig().isSet(path) || getConfig().getInt(path) != version) {
-            if (getConfig().getBoolean("auto-update-config")) {
-                File oldConfig = new File(this.getDataFolder(), "config.yml");
-                File newConfig = new File(this.getDataFolder(), "config-old.yml");
-                oldConfig.renameTo(newConfig);
-                getLogger().info("Your config has been auto updated. You can disable this in the config.");
-            } else {
-                getLogger().info("Your config is out of date!");
-            }
         }
     }
 

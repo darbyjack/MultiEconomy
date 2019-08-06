@@ -5,29 +5,6 @@ authors: [blockslayer22]
 description: MultiEconomy
 website: https://glaremasters.me/discord
 
-commands:
-  mebalance:
-    description: mebalance
-  meset:
-    description: meset
-  mereset:
-    description: mereset
-  megive:
-    description: megive
-  metake:
-    description: metake
-  melist:
-    description: melist
-  mebalances:
-    description: mebalances
-  mepay:
-    description: mepay
-  mehelp:
-    description: mehelp
-  meversion:
-    description: meversion
-  metop:
-    description: metop
 
 permissions:
   me.user:
