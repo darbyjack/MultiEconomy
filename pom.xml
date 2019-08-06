@@ -6,7 +6,7 @@
 
   <groupId>me.glaremasters</groupId>
   <artifactId>MultiEconomy</artifactId>
-  <version>1.0.6-RELEASE</version>
+  <version>1.0.7-BETA</version>
   <packaging>jar</packaging>
 
   <name>MultiEconomy</name>
@@ -45,6 +45,10 @@
                   <pattern>org.bstats</pattern>
                   <shadedPattern>me.glaremasters.multieconomy.libs.bstats</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>co.aikar.commands</pattern>
+                  <shadedPattern>me.glaremasters.multieconomy.libs.acf</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -67,28 +71,46 @@
   </repositories>
 
   <dependencies>
+    <!-- Platform -->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
       <version>1.14.4-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- Command framework using annotations -->
+    <dependency>
+      <groupId>co.aikar</groupId>
+      <artifactId>acf-paper</artifactId>
+      <version>0.5.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- bStats Metrics -->
     <dependency>
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
       <version>1.5</version>
       <scope>compile</scope>
     </dependency>
+
+    <!-- ConfigMe API (handles the config) -->
+    <dependency>
+      <groupId>ch.jalu</groupId>
+      <artifactId>configme</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- Used to handle some file stuff -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.6</version>
     </dependency>
-    <dependency>
-      <groupId>me.rayzr522</groupId>
-      <artifactId>jsonmessage</artifactId>
-      <version>1.0.0</version>
-    </dependency>
+
+    <!-- Used for Nonnulls -->
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>

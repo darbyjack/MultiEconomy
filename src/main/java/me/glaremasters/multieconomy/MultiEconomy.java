@@ -1,5 +1,8 @@
 package me.glaremasters.multieconomy;
 
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.configme.SettingsManagerBuilder;
+import co.aikar.commands.PaperCommandManager;
 import me.glaremasters.multieconomy.commands.CMDBalance;
 import me.glaremasters.multieconomy.commands.CMDBalances;
 import me.glaremasters.multieconomy.commands.CMDGive;
@@ -11,6 +14,8 @@ import me.glaremasters.multieconomy.commands.CMDSet;
 import me.glaremasters.multieconomy.commands.CMDTake;
 import me.glaremasters.multieconomy.commands.CMDTop;
 import me.glaremasters.multieconomy.commands.CMDVersion;
+import me.glaremasters.multieconomy.configuration.ConfigurationBuilder;
+import me.glaremasters.multieconomy.configuration.MultiEconomyMigrationService;
 import me.glaremasters.multieconomy.events.BalanceGUIListener;
 import me.glaremasters.multieconomy.events.JoinEvent;
 import me.glaremasters.multieconomy.updater.SpigotUpdater;
@@ -24,26 +29,27 @@ import java.util.logging.Level;
 
 public final class MultiEconomy extends JavaPlugin {
 
-    private static MultiEconomy i;
+    private PaperCommandManager commandManager;
+    private SettingsManager settingsManager;
 
-    public static MultiEconomy getI() {
-        return i;
-    }
+    private static MultiEconomy i;
 
     public File dataFile = new File(this.getDataFolder(), "data.yml");
 
     public YamlConfiguration dataFileConfig = YamlConfiguration.loadConfiguration(this.dataFile);
 
+    public static MultiEconomy getI() {
+        return i;
+    }
+
     @Override
     public void onEnable() {
-        i = this;
-        updateConfig("version", 1);
-        saveDefaultConfig();
+        loadConfig();
         saveData();
 
         Metrics metrics = new Metrics(this);
 
-        getServer().getPluginManager().registerEvents(new JoinEvent(i), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
         getCommand("mebalance").setExecutor(new CMDBalance(this));
         getCommand("meset").setExecutor(new CMDSet(this));
         getCommand("mereset").setExecutor(new CMDReset(this));
@@ -54,7 +60,7 @@ public final class MultiEconomy extends JavaPlugin {
         getCommand("mepay").setExecutor(new CMDPay(this));
         getCommand("mehelp").setExecutor(new CMDHelp());
         getCommand("meversion").setExecutor(new CMDVersion());
-        getCommand("metop").setExecutor(new CMDTop(i));
+        getCommand("metop").setExecutor(new CMDTop(this));
 
         getServer().getPluginManager().registerEvents(new BalanceGUIListener(), this);
 
@@ -102,5 +108,16 @@ public final class MultiEconomy extends JavaPlugin {
                 getLogger().info("Your config is out of date!");
             }
         }
+    }
+
+    /**
+     * Load the config
+     */
+    public void loadConfig() {
+        settingsManager = SettingsManagerBuilder
+                .withYamlFile(new File(getDataFolder(), "config.yml"))
+                .migrationService(new MultiEconomyMigrationService())
+                .configurationData(ConfigurationBuilder.buildConfig())
+                .create();
     }
 }

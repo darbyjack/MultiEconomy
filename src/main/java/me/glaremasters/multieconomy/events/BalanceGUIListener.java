@@ -32,10 +32,7 @@ public class BalanceGUIListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        if (UUIDS.contains(player.getUniqueId())) {
-            UUIDS.remove(player.getUniqueId());
-        }
-
+        UUIDS.remove(player.getUniqueId());
     }
 
 }
